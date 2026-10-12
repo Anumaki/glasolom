@@ -1,6 +1,11 @@
 // GLASOLOM localization. Strings only; no external services.
 window.GLASOLOM_TRANSLATIONS = {
   "sr": {
+    "trimHeading": "Precizno isecanje · IN / OUT",
+    "trimIn": "IN · početak",
+    "trimOut": "OUT · kraj",
+    "trimSeconds": "Sekunde",
+    "trimHelp": "Pomeraj oba klizača ili unesi tačno vreme u sekundama. Označeni deo se koristi za IN–OUT eksport.",
     "iosDecoding": "Priprema iOS audio snimka...",
     "iosUnavailable": "Ovaj uređaj ne podržava obradu zvuka.",
     "iosFileChanged": "Učitan je drugi fajl. Pokušaj ponovo.",
@@ -116,6 +121,11 @@ window.GLASOLOM_TRANSLATIONS = {
     "videoUnsupported": "Ovaj pregledač ne podržava video eksport"
   },
   "en": {
+    "trimHeading": "Precise trimming · IN / OUT",
+    "trimIn": "IN · start",
+    "trimOut": "OUT · end",
+    "trimSeconds": "Seconds",
+    "trimHelp": "Drag either slider or enter precise times in seconds. The selected segment is used for IN–OUT export.",
     "iosDecoding": "Preparing iOS recording...",
     "iosUnavailable": "This device does not support audio processing.",
     "iosFileChanged": "File changed. Please try again.",
@@ -231,6 +241,11 @@ window.GLASOLOM_TRANSLATIONS = {
     "videoUnsupported": "Video export is not supported in this browser"
   },
   "ru": {
+    "trimHeading": "Точная обрезка · IN / OUT",
+    "trimIn": "IN · начало",
+    "trimOut": "OUT · конец",
+    "trimSeconds": "Секунды",
+    "trimHelp": "Перемещайте ползунки или введите время в секундах. Выбранный интервал используется для экспорта IN–OUT.",
     "iosDecoding": "Подготовка записи iOS...",
     "iosUnavailable": "Обработка аудио не поддерживается.",
     "iosFileChanged": "Файл изменился. Повторите попытку.",
@@ -346,6 +361,11 @@ window.GLASOLOM_TRANSLATIONS = {
     "videoUnsupported": "Экспорт видео не поддерживается этим браузером"
   },
   "es": {
+    "trimHeading": "Recorte preciso · IN / OUT",
+    "trimIn": "IN · inicio",
+    "trimOut": "OUT · fin",
+    "trimSeconds": "Segundos",
+    "trimHelp": "Mueve los controles o introduce tiempos exactos en segundos. Solo se exporta el intervalo IN–OUT.",
     "iosDecoding": "Preparando audio en iOS...",
     "iosUnavailable": "Este dispositivo no admite procesamiento de audio.",
     "iosFileChanged": "El archivo ha cambiado. Inténtalo de nuevo.",
