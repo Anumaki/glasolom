@@ -12,6 +12,7 @@ function cutStamp(v) {
 }
 function cutControls(recordingNow) {
   for(const id of cutIds) cutEl(id).disabled = !cut.ready || !!recordingNow;
+  const exportButton=cutEl('exportCut');if(exportButton)exportButton.disabled=!cut.ready || !!recordingNow || exportStarting;
 }
 function syncCutUI() {
   const d=cut.duration, start=cut.start, end=cut.end;
@@ -77,9 +78,10 @@ async function jumpToCutStart(){
 }
 function enforceCutEnd(){
   if(!cut.ready||media.paused||media.seeking)return;
-  if(media.currentTime>=cut.end-.02) {
-    if(recording)stopRecording();
-    else media.pause();
+  if(recording && exportMode==='manual')return;
+  if(media.currentTime>=cut.end-.015) {
+    if(recording && exportMode==='cut')stopRecording();
+    else if(!recording)media.pause();
   }
 }
 for(const [id,side] of [['cutStart','start'],['cutEnd','end'],['cutStartNumber','start'],['cutEndNumber','end']]) {
