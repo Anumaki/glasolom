@@ -21,7 +21,7 @@
 .disclaimer b{color:var(--acid);font-size:13px;display:block;margin-bottom:5px}.disclaimer p{margin:0 0 8px}.disclaimer p:last-child{margin-bottom:0}
 .foot a{color:var(--acid)}.foot{flex-wrap:wrap;align-items:center}.footer-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
 @media(max-width:620px){.top{gap:12px}.brand{font-size:21px}.tag{display:none}.head-actions{width:100%;margin:0;justify-content:space-between}.hero h1{font-size:clamp(32px,9vw,49px);letter-spacing:-1.5px}}
-</style>
+.cut-panel{margin:0 18px 18px;padding:14px;background:#10191d;border:1px solid var(--line);border-radius:12px}.cut-head{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}.cut-summary{color:var(--acid);font-size:12px}.cut-track{height:7px;background:#435056;border-radius:9px;position:relative;margin:15px 0}.cut-highlight{position:absolute;background:var(--acid);height:100%;border-radius:9px}.cut-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.cut-grid label{display:grid;gap:5px;font-size:12px;color:var(--muted)}.cut-grid input{width:100%;accent-color:var(--acid)}.cut-grid input[type=number]{background:#1b272c;color:var(--ink);border:1px solid #44565d;border-radius:7px;padding:7px}.cut-buttons{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.cut-buttons button{border:1px solid #52675d;background:#23322e;color:var(--ink);border-radius:7px;padding:7px;font-size:12px}</style>
 </head>
 <body>
 <div class="shell">
@@ -34,7 +34,7 @@
    <input id="input" type="file" accept="audio/*,video/*,.m4a,.wav,.mp3,.mp4,.webm,.mov"/>
    <div class="player"><div class="screen"><canvas id="canvas" width="960" height="540"></canvas></div>
    <div class="control-row"><button id="play" class="play" disabled data-i18n="play">▶ Pusti</button><input id="seek" class="seek" type="range" min="0" max="1000" value="0" disabled aria-label="Pozicija snimka"><span class="clock" id="clock">00:00 / 00:00</span></div>
-   </div><video id="media" preload="auto" playsinline></video>
+   </div><div class="cut-panel"><div class="cut-head"><b class="eyebrow" data-i18n="cutHeading">CUT / Iseci snimak</b><span class="cut-summary" id="cutSummary"></span></div><div class="cut-track"><div class="cut-highlight" id="cutHighlight"></div></div><div class="cut-grid"><label><span data-i18n="cutFrom">Početak</span><input id="cutStart" type="range" min="0" max="1" step="0.01" disabled></label><label><span data-i18n="cutTo">Kraj</span><input id="cutEnd" type="range" min="0" max="1" step="0.01" disabled></label><label><span data-i18n="cutFrom">Početak</span><input id="cutStartNumber" type="number" min="0" step="0.01" disabled></label><label><span data-i18n="cutTo">Kraj</span><input id="cutEndNumber" type="number" min="0" step="0.01" disabled></label></div><div class="cut-buttons"><button id="markIn" disabled data-i18n="markIn">◀ Postavi IN</button><button id="markOut" disabled data-i18n="markOut">Postavi OUT ▶</button><button id="previewCut" disabled data-i18n="previewCut">▶ Pregled isečka</button><button id="resetCut" disabled data-i18n="resetCut">Ceo snimak</button></div><p class="tiny" data-i18n="cutHint">Izaberi interval i izvezi samo taj deo.</p></div><video id="media" preload="auto" playsinline></video>
   </section>
   <section class="panel"><div class="mixer"><div class="panel-head" style="padding-left:0;padding-right:0"><span class="eyebrow" data-i18n="labHeader">02 / Laboratorija</span><span class="sub" data-i18n="realTime">Obrada u realnom vremenu</span></div>
    <div class="presets">
@@ -56,7 +56,7 @@
    <div class="actions"><button id="export" class="export" disabled><span>⬇</span><span id="exportText" data-i18n="export">Eksportuj obrađeni snimak</span></button><p class="tiny" id="format" data-i18n="exportNote">Export ide u MP4/WebM, zavisno od podrške pregledača. Snimak se obrađuje dok traje reprodukcija.</p></div>
   </div></section>
  </div>
- <div class="info"><div><b data-i18n="privacyHead">Privatnost</b><span data-i18n="privacyBody">Audio i video se procesiraju u tvom pregledaču. Nema naloga, servera ni upload-a na internet.</span></div><div><b data-i18n="satireHead">Transparentna satira</b><span data-i18n="satireBody">Na izvezenom videu stoji oznaka „PARODIJA · IZMENJEN ZVUK“. Reči se ne dodaju, ne izbacuju i ne menjaju.</span></div></div>
+ <div class="info"><div><b data-i18n="privacyHead">Privatnost</b><span data-i18n="privacyBody">Audio i video se procesiraju u tvom pregledaču. Nema naloga, servera ni upload-a na internet.</span></div><div><b data-i18n="satireHead">Transparentna satira</b><span data-i18n="satireBody">Nema natpisa preko snimka. Prilikom deljenja naznači da je zvuk izmenjen.</span></div></div>
  <aside class="disclaimer" role="note" aria-label="Disclaimer">
   <b data-i18n="disclaimerHead">Napomena o satiri i odgovornoj upotrebi</b>
   <p data-i18n="disclaimerBody">GLASOLOM je nezavisan alat za humor, satiru, parodiju i kreativnu obradu zvuka. Nije napravljen radi vređanja, omalovažavanja, uznemiravanja ili diskriminacije bilo koje osobe ili grupe. Korisnik je odgovoran za materijal koji obrađuje, pravo da ga koristi i način objavljivanja.</p>
@@ -83,7 +83,7 @@ function translateUI(lang){
  if(recording) $('exportText').textContent=t('stopExport');
  else $('exportText').textContent=t('export');
  $('play').textContent=t(media && !media.paused?'pause':'play');
- $('seek').setAttribute('aria-label',t('seekLabel'));
+ $('seek').setAttribute('aria-label',t('seekLabel'));if(typeof syncCutUI==='function')syncCutUI();
  document.title='GLASOLOM — Heilitis Vox Sanatum';
 }
 function initDonations(){
@@ -177,35 +177,33 @@ async function initAudio(){if(fxReady){if(audio.state!=='running')await audio.re
 }
 function setFile(f){if(!f)return;if(recording){setStatus(t('finishExport'),true);return;}if(!(f.type.startsWith('audio/')||f.type.startsWith('video/')||/\.(mp3|wav|m4a|mp4|mov|webm|ogg)$/i.test(f.name))){setStatus(t('chooseAV'),true);return;}
  if(fileUrl)URL.revokeObjectURL(fileUrl);file=f;fileUrl=URL.createObjectURL(f);isVideo=f.type.startsWith('video/')||/\.(mp4|mov|webm)$/i.test(f.name);
- media.pause();media.src=fileUrl;media.load();$('fileName').textContent=f.name;$('drop').querySelector('strong').dataset.i18n='dropChange';$('drop').querySelector('strong').textContent=t('dropChange');$('play').disabled=false;$('export').disabled=false;$('seek').value=0;$('seek').disabled=false;setStatus(t('fileLoaded',{name:f.name}));
+ media.pause();media.src=fileUrl;media.load();$('fileName').textContent=f.name;$('drop').querySelector('strong').dataset.i18n='dropChange';$('drop').querySelector('strong').textContent=t('dropChange');$('play').disabled=false;$('export').disabled=false;$('seek').value=0;$('seek').disabled=false;resetCutForFile();setStatus(t('fileLoaded',{name:f.name}));
 }
 $('drop').addEventListener('click',()=>$('input').click());$('drop').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();$('input').click();}});$('input').addEventListener('change',e=>setFile(e.target.files[0]));
 for(const name of ['dragenter','dragover'])$('drop').addEventListener(name,e=>{e.preventDefault();$('drop').classList.add('over');});for(const name of ['dragleave','drop'])$('drop').addEventListener(name,e=>{e.preventDefault();$('drop').classList.remove('over');});$('drop').addEventListener('drop',e=>setFile(e.dataTransfer.files[0]));
 document.querySelectorAll('.preset').forEach(b=>b.addEventListener('click',()=>setPreset(b.dataset.preset)));$('reset').addEventListener('click',()=>setPreset(currentPreset));Object.values(controls).forEach(el=>el.addEventListener('input',applyFx));
-$('play').addEventListener('click',async()=>{if(!file||recording)return;try{await initAudio();if(media.paused){await media.play();}else media.pause();}catch(e){setStatus(t('playError',{message:e.message}),true);}});
+$('play').addEventListener('click',async()=>{if(!file||recording)return;try{await initAudio();if(media.paused){if(cut.ready&&(media.currentTime<cut.start||media.currentTime>=cut.end-.04))await jumpToCutStart();await media.play();}else media.pause();}catch(e){setStatus(t('playError',{message:e.message}),true);}});
 media.addEventListener('play',()=>{$('play').textContent=t('pause');});media.addEventListener('pause',()=>{$('play').textContent=t('play');});media.addEventListener('error',()=>{if(file)setStatus(t('decodeError'),true);});
-media.addEventListener('loadedmetadata',()=>{if(isVideo&&media.videoWidth&&media.videoHeight){let w=Math.min(1280,media.videoWidth),h=Math.round(w*media.videoHeight/media.videoWidth);canvas.width=w;canvas.height=h;}else{canvas.width=960;canvas.height=540;}syncClock();});
+media.addEventListener('loadedmetadata',()=>{if(isVideo&&media.videoWidth&&media.videoHeight){let w=Math.min(1280,media.videoWidth),h=Math.round(w*media.videoHeight/media.videoWidth);canvas.width=w;canvas.height=h;}else{canvas.width=960;canvas.height=540;}syncClock();initializeCut();});
 function syncClock(){const d=media.duration||0;$('clock').textContent=formatTime(media.currentTime)+' / '+formatTime(d);if(d&&Number.isFinite(d))$('seek').value=Math.round(media.currentTime/d*1000);}
-$('seek').addEventListener('input',e=>{if(!recording&&Number.isFinite(media.duration))media.currentTime=(+e.target.value/1000)*media.duration;syncClock();});
+$('seek').addEventListener('input',e=>{if(!recording&&Number.isFinite(media.duration)){let v=(+e.target.value/1000)*media.duration;media.currentTime=cut.ready?Math.max(cut.start,Math.min(cut.end,v)):v;}syncClock();});
 function draw(){let w=canvas.width,h=canvas.height;cv.fillStyle='#071014';cv.fillRect(0,0,w,h);
  if(isVideo&&file&&media.readyState>=2&&media.videoWidth){let vw=media.videoWidth,vh=media.videoHeight,scale=Math.min(w/vw,h/vh),dw=vw*scale,dh=vh*scale;try{cv.drawImage(media,(w-dw)/2,(h-dh)/2,dw,dh);}catch(e){}}
  else{const bars=65,bw=w*.65/bars,left=w*.175,data=new Uint8Array(128);if(analyser)analyser.getByteFrequencyData(data);
  cv.save();for(let i=0;i<bars;i++){let q=data[Math.floor(i*data.length/bars)]/255;let t=(!file?0.08:(media.paused?.08:.18))+q*.75;let bh=Math.max(5,t*(h*.63));cv.fillStyle=i%4===0?'#cfff65':'#83b7a5';cv.fillRect(left+i*bw,h/2-bh/2,bw*.55,bh);}cv.restore();cv.fillStyle='#bdcacc';cv.font=`bold ${Math.floor(h*.055)}px system-ui`;cv.textAlign='center';cv.fillText(file?t('previewTitle'):t('previewUpload'),w/2,h*.8);}
- // Burn an unmistakable label into recorded video frames.
- if(file){let fs=Math.max(12,Math.round(w*.016));cv.font=`800 ${fs}px system-ui`;let label=t('watermark');let pad=fs*.55,textw=cv.measureText(label).width;cv.fillStyle='#0a1111dd';cv.fillRect(14,14,textw+pad*2,fs*2.2);cv.fillStyle='#e3ffbc';cv.textAlign='left';cv.fillText(label,14+pad,14+fs*1.48);}
- syncClock();requestAnimationFrame(draw);}
+ syncClock();if(recording&&cut.ready&&media.currentTime>=cut.end-.025)stopRecording();requestAnimationFrame(draw);}
 requestAnimationFrame(draw);
 function getRecordingType(video){const choices=video?['video/mp4;codecs=avc1.42E01E,mp4a.40.2','video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm']:['audio/mp4;codecs=mp4a.40.2','audio/webm;codecs=opus','audio/webm'];for(const t of choices)if(MediaRecorder.isTypeSupported(t))return t;return '';}
 $('export').addEventListener('click',async()=>{if(recording){stopRecording();return;}if(!file)return;
  try{if(typeof MediaRecorder==='undefined')throw Error(t('mediaRecorderUnsupported'));await initAudio();
- // Always export from the beginning, retaining source timing.
- media.pause();media.currentTime=0;
+ // Export selected interval.
+ getCutSelection();media.pause();await jumpToCutStart();
  if(isVideo&&!canvas.captureStream)throw Error(t('videoUnsupported'));
  const tracks=[...recDest.stream.getAudioTracks()];if(isVideo){capStream=canvas.captureStream(30);tracks.push(...capStream.getVideoTracks());}
  const stream=new MediaStream(tracks);exportMime=getRecordingType(isVideo);exportExt=exportMime.includes('mp4')?'mp4':'webm';
  recorder=new MediaRecorder(stream,exportMime?{mimeType:exportMime,videoBitsPerSecond:4000000,audioBitsPerSecond:192000}:{videoBitsPerSecond:4000000,audioBitsPerSecond:192000});chunks=[];downloadOnStop=true;
  recorder.addEventListener('dataavailable',e=>{if(e.data&&e.data.size)chunks.push(e.data);});
- recorder.addEventListener('stop',()=>{recording=false;$('exportText').textContent=t('export');$('seek').disabled=false;$('play').disabled=false;
+ recorder.addEventListener('stop',()=>{recording=false;$('exportText').textContent=t('export');cutControls(false);$('seek').disabled=false;$('play').disabled=false;
   if(capStream){capStream.getTracks().forEach(t=>t.stop());capStream=null;}
   if(!chunks.length){setStatus(t('noExportData'),true);return;}
   const blob=new Blob(chunks,{type:exportMime||recorder.mimeType});let name=file.name.replace(/\.[^.]+$/,'').replace(/[^a-zA-Z0-9_\-\u00C0-\u024F\u0400-\u04FF]+/g,'_');
@@ -213,7 +211,7 @@ $('export').addEventListener('click',async()=>{if(recording){stopRecording();ret
   setStatus(t('exportDone',{name:link.download,size:(blob.size/1024/1024).toFixed(1)}));
  });
  recorder.addEventListener('error',e=>{setStatus(t('recorderError',{message:e.error?.message||t('unknown')}),true);});
- recorder.start(250);recording=true;$('seek').disabled=true;$('play').disabled=true;$('exportText').textContent=t('stopExport');
+ recorder.start(250);recording=true;cutControls(true);$('seek').disabled=true;$('play').disabled=true;$('exportText').textContent=t('stopExport');
  setStatus(t('exportInProgress'));await media.play();
  }catch(e){setStatus(t('exportError',{message:e.message}),true);if(recording)stopRecording();}
 });
@@ -224,5 +222,6 @@ initDonations();
 translateUI('sr');
 setPreset('duck');
 </script>
+<script src="cut.js"></script>
 </body>
 </html>
