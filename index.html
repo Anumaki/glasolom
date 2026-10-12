@@ -22,6 +22,7 @@
 .disclaimer b{color:var(--acid);font-size:13px;display:block;margin-bottom:5px}.disclaimer p{margin:0 0 8px}.disclaimer p:last-child{margin-bottom:0}
 .foot a{color:var(--acid)}.foot{flex-wrap:wrap;align-items:center}.footer-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
 @media(max-width:620px){.top{gap:12px}.brand{font-size:21px}.tag{display:none}.head-actions{width:100%;margin:0;justify-content:space-between}.hero h1{font-size:clamp(32px,9vw,49px);letter-spacing:-1.5px}}
+.trim-editor{padding:13px 14px;margin:12px 0 4px;background:#10191d;border:1px solid #324149;border-radius:11px}.trim-heading{font-size:11px;font-weight:800;letter-spacing:.8px;color:var(--acid);margin-bottom:8px}.trim-selection{height:8px;position:relative;background:#415258;border-radius:10px;margin:14px 5px}.trim-selection-fill{position:absolute;background:#caff64;height:100%;border-radius:10px}.trim-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.trim-grid label{display:block;font-size:12px;color:var(--muted)}.trim-grid input[type=range]{width:100%;accent-color:var(--acid)}.trim-grid input[type=number]{width:100%;padding:7px;color:var(--ink);background:#203039;border:1px solid #50616b;border-radius:6px;margin-top:3px}.trim-help{font-size:11px;color:var(--muted);margin:9px 0 0}.trim-grid input:disabled{opacity:.5}
 </style>
 </head>
 <body>
@@ -36,7 +37,7 @@
    <input id="input" type="file" accept="audio/*,video/*,.m4a,.wav,.mp3,.mp4,.webm,.mov"/>
    <div class="player"><div class="screen"><canvas id="canvas" width="960" height="540"></canvas></div>
    <div class="control-row"><button id="play" class="play" disabled data-i18n="play">▶ Pusti</button><input id="seek" class="seek" type="range" min="0" max="1000" value="0" disabled aria-label="Pozicija snimka"><span class="clock" id="clock">00:00 / 00:00</span></div>
-   <div class="range-tools"><button id="markIn" disabled data-i18n="markIn" type="button">Označi IN</button><button id="markOut" disabled data-i18n="markOut" type="button">Označi OUT</button><button id="resetRange" disabled data-i18n="resetRange" type="button">Ceo snimak</button><span class="range-display" id="rangeDisplay">IN 00:00 · OUT 00:00</span></div>
+   <div class="range-tools"><button id="markIn" disabled data-i18n="markIn" type="button">Označi IN</button><button id="markOut" disabled data-i18n="markOut" type="button">Označi OUT</button><button id="resetRange" disabled data-i18n="resetRange" type="button">Ceo snimak</button><span class="range-display" id="rangeDisplay">IN 00:00 · OUT 00:00</span></div><div class="trim-editor"><div class="trim-heading" data-i18n="trimHeading">Precizno isecanje · IN / OUT</div><div class="trim-selection"><div class="trim-selection-fill" id="trimFill"></div></div><div class="trim-grid"><label><span data-i18n="trimIn">IN · početak</span><input id="trimInSlider" type="range" min="0" max="1" step="0.01" disabled/><input id="trimInTime" type="number" min="0" step="0.01" disabled aria-label="IN seconds"/></label><label><span data-i18n="trimOut">OUT · kraj</span><input id="trimOutSlider" type="range" min="0" max="1" step="0.01" disabled/><input id="trimOutTime" type="number" min="0" step="0.01" disabled aria-label="OUT seconds"/></label></div><p class="trim-help" data-i18n="trimHelp">Pomeraj oba klizača ili unesi vreme u sekundama.</p></div>
    </div><video id="media" preload="auto" playsinline></video>
   </section>
   <section class="panel"><div class="mixer"><div class="panel-head" style="padding-left:0;padding-right:0"><span class="eyebrow" data-i18n="labHeader">02 / Laboratorija</span><span class="sub" data-i18n="realTime">Obrada u realnom vremenu</span></div>
@@ -186,6 +187,30 @@ function updateRangeDisplay(){
  const end=Number.isFinite(media.duration)?media.duration:0;
  const out=rangeOut===null?end:Math.min(rangeOut,end);
  $('rangeDisplay').textContent=`IN ${formatTime(rangeIn)} · OUT ${formatTime(out)}`;
+ updateTrimEditor();
+}
+function updateTrimEditor(){
+ const duration=Number.isFinite(media.duration)&&media.duration>0?media.duration:0;
+ const ends=rangeOut===null?duration:Math.min(duration,rangeOut);
+ const minimum=Math.min(.1,duration/2);
+ const enabled=!!file&&duration>0&&!recording;
+ for(const id of ['trimInSlider','trimOutSlider','trimInTime','trimOutTime'])$(id).disabled=!enabled;
+ for(const id of ['trimInSlider','trimOutSlider'])$(id).max=String(duration||1);
+ $('trimInSlider').value=String(Math.min(rangeIn,duration));$('trimOutSlider').value=String(ends);
+ $('trimInTime').max=String(Math.max(0,ends-minimum));$('trimOutTime').max=String(duration);
+ $('trimInTime').value=Math.min(rangeIn,duration).toFixed(2);$('trimOutTime').value=ends.toFixed(2);
+ $('trimFill').style.left=duration?(100*rangeIn/duration)+'%':'0%';
+ $('trimFill').style.width=duration?(100*Math.max(0,ends-rangeIn)/duration)+'%':'0%';
+}
+function setTrim(which,value){
+ const duration=media.duration;if(!file||recording||!Number.isFinite(duration)||duration<=0)return;
+ const min=Math.min(.1,duration/2);let v=Number(value);if(!Number.isFinite(v))return;
+ if(which==='in'){rangeIn=Math.max(0,Math.min(v,(rangeOut===null?duration:rangeOut)-min));}
+ else {rangeOut=Math.max(rangeIn+min,Math.min(v,duration));}
+ updateRangeDisplay();
+}
+for(const [id,kind] of [['trimInSlider','in'],['trimOutSlider','out'],['trimInTime','in'],['trimOutTime','out']]){
+ $(id).addEventListener(id.endsWith('Time')?'change':'input',e=>setTrim(kind,e.target.value));
 }
 function setFile(f){
  if(!f)return;
@@ -289,6 +314,7 @@ function toggleExportButtons(active){
  $('play').disabled=active||!file;$('seek').disabled=active||!file;
  $('recordMic').disabled=active||micPending;
  for(const id of ['markIn','markOut','resetRange'])$(id).disabled=active||!file;
+ updateTrimEditor();
 }
 async function startExport(onlyRange=false){
  if(window.GLASOLOM_iOS?.handles(file,isVideo)){await window.GLASOLOM_iOS.exportAudio(onlyRange);return;}
