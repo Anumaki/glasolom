@@ -15,7 +15,8 @@ Open `index.html` in desktop Chrome or Edge, or host the repository on GitHub Pa
 - Live pitch, flanger, and robotic modulation controls.
 - Serbian, English, Russian, and Spanish interface.
 - **Cut / Trim:** set in/out points with sliders, second-precision inputs, or IN/OUT buttons; preview the selected segment.
-- **Export IN–OUT:** records the chosen interval automatically and saves at its OUT point (e.g. 4–10 s ≈ 6 s). **Manual export** remains available with Stop and save.
+- **Fast Export IN–OUT (experimental):** processes the selected segment offline rather than playing it in real time, using Mediabunny and WebCodecs. It may be significantly faster but depends on the file codec and device; video may still require substantial processing. Audio-only output is WAV. Large exports can use a direct Save As file picker on compatible desktop browsers.
+- **Export IN–OUT (real-time):** records the chosen interval and saves at its OUT point. **Manual export** remains available with Stop and save.
 - Video exports have **no burned-in text overlay**. Clearly disclose any audio alteration when sharing clips.
 - Local browser processing: no analytics, accounts, or remote file upload.
 - Optional Ko-fi support link. No advertising or tracking scripts included.
@@ -47,7 +48,7 @@ No build step, server, or API key is required. Use HTTPS (GitHub Pages serves it
 
 ## Privacy and limitations
 
-All imported media is processed inside the user's browser. Exports use `MediaRecorder` in real time. IN–OUT export stops automatically at the OUT marker, with a timed fallback. Duration and cut points may vary slightly with browser media timing; this is not frame-accurate lossless editing. The app does not transmit input files to a GLASOLOM server. Audio-only exports do **not** carry an audible parody announcement; label them clearly when sharing. Some browsers may not export MP4; WebM is the normal fallback. Depending on browser security rules, audio worklet pitch-shifting can fall back to native Web Audio nodes. The pitch effects may contain artifacts and **do not imitate actors or reproduce distinctive voices accurately**.
+All imported media is processed inside the user's browser. Manual and standard IN–OUT exports use `MediaRecorder` in real time. Fast export uses a separate experimental client-side processing pipeline. IN–OUT export stops automatically at the OUT marker, with a timed fallback. Duration and cut points may vary slightly with browser media timing; this is not frame-accurate lossless editing. The app does not transmit input files to a GLASOLOM server. Audio-only exports do **not** carry an audible parody announcement; label them clearly when sharing. Some browsers may not export MP4; WebM is the normal fallback. Depending on browser security rules, audio worklet pitch-shifting can fall back to native Web Audio nodes. The pitch effects may contain artifacts and **do not imitate actors or reproduce distinctive voices accurately**.
 
 For the sake of honest context, the effects should modify audio characteristics rather than the words, while the person publishing remains responsible for editing or misrepresentation outside this tool.
 
@@ -62,3 +63,7 @@ The source code is publicly viewable but **no open-source license has been grant
 ## Development
 
 No dependencies. Edit `index.html` for UI/audio logic, `cut.js` for trimming, `i18n.js` for translations, `config.js` for the Ko-fi link. Do not commit third-party copyrighted film samples, personal files or credentials. Bug reports and suggestions are welcome via issues. Contact the project owner before redistributing or reusing source code.
+
+## Fast export dependency
+
+The experimental fast exporter lazily imports Mediabunny 1.61.3 from the pinned jsDelivr package (`dist/bundles/mediabunny.min.mjs`). It requires internet connectivity to fetch that JavaScript module and browser support for the input/output codecs. Files remain local. Mediabunny is licensed under MPL-2.0; see https://github.com/Vanilagy/mediabunny. Fast-export DSP approximates the live voice effect and may sound different; compare before publishing. Chrome/Edge recommended.
