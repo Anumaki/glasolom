@@ -59,7 +59,7 @@
    <div class="actions"><button id="export" class="export" disabled><span>⬇</span><span id="exportText" data-i18n="export">Eksportuj obrađeni snimak</span></button><button id="exportRange" class="export secondary-export" disabled><span>⚡</span><span id="exportRangeText" data-i18n="quickExport">Brzi eksport IN–OUT</span></button><p class="tiny" id="format" data-i18n="exportNote">Export ide u MP4/WebM, zavisno od podrške pregledača. Snimak se obrađuje dok traje reprodukcija.</p></div>
   </div></section>
  </div>
- <div class="info"><div><b data-i18n="privacyHead">Privatnost</b><span data-i18n="privacyBody">Audio i video se procesiraju u tvom pregledaču. Nema naloga, servera ni upload-a na internet.</span></div><div><b data-i18n="satireHead">Transparentna satira</b><span data-i18n="satireBody">Na izvezenom videu stoji oznaka „PARODIJA · IZMENJEN ZVUK“. Reči se ne dodaju, ne izbacuju i ne menjaju.</span></div></div>
+ <div class="info"><div><b data-i18n="privacyHead">Privatnost</b><span data-i18n="privacyBody">Audio i video se procesiraju u tvom pregledaču. Nema naloga, servera ni upload-a na internet.</span></div><div><b data-i18n="satireHead">Transparentna satira</b><span data-i18n="satireBody">Obrađeni snimci se izvoze bez natpisa preko slike. Prilikom objavljivanja jasno naznačite da je zvuk izmenjen.</span></div></div>
  <aside class="disclaimer" role="note" aria-label="Disclaimer">
   <b data-i18n="disclaimerHead">Napomena o satiri i odgovornoj upotrebi</b>
   <p data-i18n="disclaimerBody">GLASOLOM je nezavisan alat za humor, satiru, parodiju i kreativnu obradu zvuka. Nije napravljen radi vređanja, omalovažavanja, uznemiravanja ili diskriminacije bilo koje osobe ili grupe. Korisnik je odgovoran za materijal koji obrađuje, pravo da ga koristi i način objavljivanja.</p>
@@ -138,7 +138,7 @@ let currentPreset='duck',file=null,fileUrl='',isVideo=false,audio=null,worklet=n
 let micRecorder=null,micStream=null,micChunks=[],micTick=null,micStart=0,micPending=false,rangeIn=0,rangeOut=null,exportStopAt=null;
 const setStatus=(s,warning=false)=>{$('status').textContent=s;$('status').style.color=warning?'#ffc87a':'#a9d7a1';};
 const formatTime=s=>{if(!Number.isFinite(s))return '00:00';s=Math.floor(s);return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');};
-function setPreset(name){currentPreset=name;document.querySelectorAll('.preset').forEach(b=>b.classList.toggle('active',b.dataset.preset===name));const p=presets[name];for(const id of ['pitch','flanger','ring'])controls[id].value=p[id];applyFx();}
+function setPreset(name){currentPreset=name;document.querySelectorAll('.preset').forEach(b=>b.classList.toggle('active',b.dataset.preset===name));const p=presets[name];for(const id of ['pitch','flanger','ring'])controls[id].value=p[id];applyFx();window.GLASOLOM_iOS?.markDirty();}
 function applyFx(){const p=presets[currentPreset],v={pitch:+controls.pitch.value,flanger:+controls.flanger.value/100,ring:+controls.ring.value/100};$('pitchNum').textContent=(v.pitch>=0?'+':'')+v.pitch.toFixed(1)+' st';$('flangerNum').textContent=Math.round(v.flanger*100)+'%';$('ringNum').textContent=Math.round(v.ring*100)+'%';if(!fxReady)return;
  if(worklet)worklet.port.postMessage({ratio:Math.pow(2,v.pitch/12)});
  else if(pitchFallback)pitchFallback.setPitch(v.pitch);
@@ -189,6 +189,7 @@ function updateRangeDisplay(){
 }
 function setFile(f){
  if(!f)return;
+ window.GLASOLOM_iOS?.reset();
  if(recording||micRecorder?.state==='recording'||micPending){setStatus(t('finishRecording'),true);return;}
  if(!(f.type.startsWith('audio/')||f.type.startsWith('video/')||/\.(mp3|wav|m4a|mp4|mov|webm|ogg)$/i.test(f.name))){setStatus(t('chooseAV'),true);return;}
  // .webm also supports audio: let the MIME type override the ambiguous extension.
@@ -243,8 +244,8 @@ $('recordMic').addEventListener('click',async()=>{
 });
 $('drop').addEventListener('click',()=>$('input').click());$('drop').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();$('input').click();}});$('input').addEventListener('change',e=>setFile(e.target.files[0]));
 for(const name of ['dragenter','dragover'])$('drop').addEventListener(name,e=>{e.preventDefault();$('drop').classList.add('over');});for(const name of ['dragleave','drop'])$('drop').addEventListener(name,e=>{e.preventDefault();$('drop').classList.remove('over');});$('drop').addEventListener('drop',e=>setFile(e.dataTransfer.files[0]));
-document.querySelectorAll('.preset').forEach(b=>b.addEventListener('click',()=>setPreset(b.dataset.preset)));$('reset').addEventListener('click',()=>setPreset(currentPreset));Object.values(controls).forEach(el=>el.addEventListener('input',applyFx));
-$('play').addEventListener('click',async()=>{if(!file||recording)return;try{await initAudio();if(media.paused){await media.play();}else media.pause();}catch(e){setStatus(t('playError',{message:e.message}),true);}});
+document.querySelectorAll('.preset').forEach(b=>b.addEventListener('click',()=>setPreset(b.dataset.preset)));$('reset').addEventListener('click',()=>setPreset(currentPreset));Object.values(controls).forEach(el=>el.addEventListener('input',()=>{applyFx();window.GLASOLOM_iOS?.markDirty();}));
+$('play').addEventListener('click',async()=>{if(!file||recording)return;if(window.GLASOLOM_iOS?.handles(file,isVideo)){await window.GLASOLOM_iOS.preview();return;}try{await initAudio();if(media.paused){await media.play();}else media.pause();}catch(e){setStatus(t('playError',{message:e.message}),true);}});
 media.addEventListener('play',()=>{$('play').textContent=t('pause');});media.addEventListener('pause',()=>{$('play').textContent=t('play');});media.addEventListener('error',()=>{if(file)setStatus(t('decodeError'),true);});
 media.addEventListener('loadedmetadata',()=>{if(isVideo&&media.videoWidth&&media.videoHeight){let w=Math.min(1280,media.videoWidth),h=Math.round(w*media.videoHeight/media.videoWidth);canvas.width=w;canvas.height=h;}else{canvas.width=960;canvas.height=540;}syncClock();updateRangeDisplay();});
 function syncClock(){const d=media.duration||0;$('clock').textContent=formatTime(media.currentTime)+' / '+formatTime(d);if(d&&Number.isFinite(d))$('seek').value=Math.round(media.currentTime/d*1000);}
@@ -256,8 +257,6 @@ function draw(){let w=canvas.width,h=canvas.height;cv.fillStyle='#071014';cv.fil
  if(isVideo&&file&&media.readyState>=2&&media.videoWidth){let vw=media.videoWidth,vh=media.videoHeight,scale=Math.min(w/vw,h/vh),dw=vw*scale,dh=vh*scale;try{cv.drawImage(media,(w-dw)/2,(h-dh)/2,dw,dh);}catch(e){}}
  else{const bars=65,bw=w*.65/bars,left=w*.175,data=new Uint8Array(128);if(analyser)analyser.getByteFrequencyData(data);
  cv.save();for(let i=0;i<bars;i++){let q=data[Math.floor(i*data.length/bars)]/255;let t=(!file?0.08:(media.paused?.08:.18))+q*.75;let bh=Math.max(5,t*(h*.63));cv.fillStyle=i%4===0?'#cfff65':'#83b7a5';cv.fillRect(left+i*bw,h/2-bh/2,bw*.55,bh);}cv.restore();cv.fillStyle='#bdcacc';cv.font=`bold ${Math.floor(h*.055)}px system-ui`;cv.textAlign='center';cv.fillText(file?t('previewTitle'):t('previewUpload'),w/2,h*.8);}
- // Burn an unmistakable label into recorded video frames.
- if(file){let fs=Math.max(12,Math.round(w*.016));cv.font=`800 ${fs}px system-ui`;let label=t('watermark');let pad=fs*.55,textw=cv.measureText(label).width;cv.fillStyle='#0a1111dd';cv.fillRect(14,14,textw+pad*2,fs*2.2);cv.fillStyle='#e3ffbc';cv.textAlign='left';cv.fillText(label,14+pad,14+fs*1.48);}
  syncClock();requestAnimationFrame(draw);}
 requestAnimationFrame(draw);
 function getRecordingType(video){const choices=video?['video/mp4;codecs=avc1.42E01E,mp4a.40.2','video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm']:['audio/mp4;codecs=mp4a.40.2','audio/webm;codecs=opus','audio/webm'];for(const t of choices)if(MediaRecorder.isTypeSupported(t))return t;return '';}
@@ -292,7 +291,8 @@ function toggleExportButtons(active){
  for(const id of ['markIn','markOut','resetRange'])$(id).disabled=active||!file;
 }
 async function startExport(onlyRange=false){
- if(recording){stopRecording();return;}
+ if(window.GLASOLOM_iOS?.handles(file,isVideo)){await window.GLASOLOM_iOS.exportAudio(onlyRange);return;}
+ if(recording{stopRecording();return;}
  if(!file||micPending||micRecorder?.state==='recording')return;
  try{
   if(typeof MediaRecorder==='undefined')throw new Error(t('mediaRecorderUnsupported'));
@@ -347,5 +347,6 @@ initDonations();
 translateUI('sr');
 setPreset('duck');
 </script>
+<script src="ios-audio.js"></script>
 </body>
 </html>
