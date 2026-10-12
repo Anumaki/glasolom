@@ -1,6 +1,15 @@
 // GLASOLOM localization. Strings only; no external services.
 window.GLASOLOM_TRANSLATIONS = {
   "sr": {
+    "exportFast": "⚡ Brzi eksport IN–OUT",
+    "fastLoading": "Učitavanje brzog procesora...",
+    "fastCancelled": "Eksport otkazan.",
+    "fastCodec": "Ovaj format ili kodek nije podržan za brzi eksport.",
+    "fastNoAudio": "U snimku nije pronađena audio traka.",
+    "fastProgress": "Brza obrada: {progress}%",
+    "fastFinalizing": "Završavanje izvoznog fajla...",
+    "fastDone": "Brzi eksport je završen: {name}",
+    "fastError": "Brzi eksport nije uspeo: {message}",
     "exportCut": "✂ Eksportuj IN–OUT",
     "exportCutInProgress": "Eksport od IN do OUT tačke je u toku. Fajl se automatski čuva na kraju intervala.",
     "cutHeading": "CUT / Iseci snimak",
@@ -83,6 +92,15 @@ window.GLASOLOM_TRANSLATIONS = {
     "videoUnsupported": "Ovaj pregledač ne podržava video eksport"
   },
   "en": {
+    "exportFast": "⚡ Fast export IN–OUT",
+    "fastLoading": "Loading fast media processor...",
+    "fastCancelled": "Export cancelled.",
+    "fastCodec": "Unsupported format or codec for fast export.",
+    "fastNoAudio": "No audio track found.",
+    "fastProgress": "Fast processing: {progress}%",
+    "fastFinalizing": "Finalizing output...",
+    "fastDone": "Fast export completed: {name}",
+    "fastError": "Fast export failed: {message}",
     "exportCut": "✂ Export IN–OUT",
     "exportCutInProgress": "Exporting the selected IN–OUT interval. The file is saved automatically when it finishes.",
     "cutHeading": "CUT / Trim recording",
@@ -165,6 +183,15 @@ window.GLASOLOM_TRANSLATIONS = {
     "videoUnsupported": "Video export is not supported in this browser"
   },
   "ru": {
+    "exportFast": "⚡ Быстрый экспорт IN–OUT",
+    "fastLoading": "Загрузка процессора...",
+    "fastCancelled": "Экспорт отменён.",
+    "fastCodec": "Этот формат или кодек не поддерживается.",
+    "fastNoAudio": "Аудиодорожка отсутствует.",
+    "fastProgress": "Обработка: {progress}%",
+    "fastFinalizing": "Завершение экспорта...",
+    "fastDone": "Экспорт завершён: {name}",
+    "fastError": "Ошибка быстрого экспорта: {message}",
     "exportCut": "✂ Экспорт IN–OUT",
     "exportCutInProgress": "Экспорт выбранного фрагмента IN–OUT. Файл сохранится автоматически.",
     "cutHeading": "CUT / Обрезка записи",
@@ -247,6 +274,15 @@ window.GLASOLOM_TRANSLATIONS = {
     "videoUnsupported": "Экспорт видео не поддерживается этим браузером"
   },
   "es": {
+    "exportFast": "⚡ Exportación rápida IN–OUT",
+    "fastLoading": "Cargando procesador...",
+    "fastCancelled": "Exportación cancelada.",
+    "fastCodec": "Formato o códec no compatible.",
+    "fastNoAudio": "No hay pista de audio.",
+    "fastProgress": "Procesando: {progress}%",
+    "fastFinalizing": "Finalizando archivo...",
+    "fastDone": "Exportación rápida completada: {name}",
+    "fastError": "Falló la exportación rápida: {message}",
     "exportCut": "✂ Exportar IN–OUT",
     "exportCutInProgress": "Exportando el tramo IN–OUT. El archivo se guardará automáticamente.",
     "cutHeading": "CUT / Recortar grabación",
