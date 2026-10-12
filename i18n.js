@@ -1,6 +1,15 @@
 // GLASOLOM localization. Strings only; no external services.
 window.GLASOLOM_TRANSLATIONS = {
   "sr": {
+    "iosDecoding": "Priprema iOS audio snimka...",
+    "iosUnavailable": "Ovaj uređaj ne podržava obradu zvuka.",
+    "iosFileChanged": "Učitan je drugi fajl. Pokušaj ponovo.",
+    "iosTooLong": "Snimak je predugačak za memoriju telefona. Probaj kraći isečak.",
+    "iosProcessing": "Obrada glasa: {progress}%",
+    "iosEffectChanged": "Efekat je izmenjen. Klikni Pusti za novi pregled.",
+    "iosReady": "Pušta se modulirani glas.",
+    "iosError": "Problem pri iOS obradi zvuka: {message}",
+    "iosSaved": "Obrađeni WAV snimak je spreman za preuzimanje.",
     "exportFast": "⚡ Brzi eksport IN–OUT",
     "fastLoading": "Učitavanje brzog procesora...",
     "fastCancelled": "Eksport otkazan.",
@@ -107,6 +116,15 @@ window.GLASOLOM_TRANSLATIONS = {
     "videoUnsupported": "Ovaj pregledač ne podržava video eksport"
   },
   "en": {
+    "iosDecoding": "Preparing iOS recording...",
+    "iosUnavailable": "This device does not support audio processing.",
+    "iosFileChanged": "File changed. Please try again.",
+    "iosTooLong": "Audio is too long for phone memory. Select a shorter range.",
+    "iosProcessing": "Voice processing: {progress}%",
+    "iosEffectChanged": "Effect changed. Press Play to refresh preview.",
+    "iosReady": "Playing modified voice.",
+    "iosError": "iOS audio processing failed: {message}",
+    "iosSaved": "Processed WAV is ready to save.",
     "exportFast": "⚡ Fast export IN–OUT",
     "fastLoading": "Loading fast media processor...",
     "fastCancelled": "Export cancelled.",
@@ -213,6 +231,15 @@ window.GLASOLOM_TRANSLATIONS = {
     "videoUnsupported": "Video export is not supported in this browser"
   },
   "ru": {
+    "iosDecoding": "Подготовка записи iOS...",
+    "iosUnavailable": "Обработка аудио не поддерживается.",
+    "iosFileChanged": "Файл изменился. Повторите попытку.",
+    "iosTooLong": "Запись слишком длинная. Выберите более короткий фрагмент.",
+    "iosProcessing": "Обработка голоса: {progress}%",
+    "iosEffectChanged": "Эффект изменён. Нажмите Play для обновления.",
+    "iosReady": "Воспроизведение изменённого голоса.",
+    "iosError": "Ошибка обработки iOS: {message}",
+    "iosSaved": "WAV-файл готов к загрузке.",
     "exportFast": "⚡ Быстрый экспорт IN–OUT",
     "fastLoading": "Загрузка процессора...",
     "fastCancelled": "Экспорт отменён.",
@@ -319,6 +346,15 @@ window.GLASOLOM_TRANSLATIONS = {
     "videoUnsupported": "Экспорт видео не поддерживается этим браузером"
   },
   "es": {
+    "iosDecoding": "Preparando audio en iOS...",
+    "iosUnavailable": "Este dispositivo no admite procesamiento de audio.",
+    "iosFileChanged": "El archivo ha cambiado. Inténtalo de nuevo.",
+    "iosTooLong": "Audio demasiado largo para la memoria del teléfono.",
+    "iosProcessing": "Procesando voz: {progress}%",
+    "iosEffectChanged": "Efecto modificado. Pulsa Reproducir para actualizar.",
+    "iosReady": "Reproduciendo voz modificada.",
+    "iosError": "Error de audio de iOS: {message}",
+    "iosSaved": "El WAV procesado está listo para guardar.",
     "exportFast": "⚡ Exportación rápida IN–OUT",
     "fastLoading": "Cargando procesador...",
     "fastCancelled": "Exportación cancelada.",
