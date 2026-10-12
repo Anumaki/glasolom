@@ -1,6 +1,8 @@
 // GLASOLOM localization. Strings only; no external services.
 window.GLASOLOM_TRANSLATIONS = {
   "sr": {
+    "exportCut": "✂ Eksportuj IN–OUT",
+    "exportCutInProgress": "Eksport od IN do OUT tačke je u toku. Fajl se automatski čuva na kraju intervala.",
     "cutHeading": "CUT / Iseci snimak",
     "cutFrom": "Početak",
     "cutTo": "Kraj",
@@ -81,6 +83,8 @@ window.GLASOLOM_TRANSLATIONS = {
     "videoUnsupported": "Ovaj pregledač ne podržava video eksport"
   },
   "en": {
+    "exportCut": "✂ Export IN–OUT",
+    "exportCutInProgress": "Exporting the selected IN–OUT interval. The file is saved automatically when it finishes.",
     "cutHeading": "CUT / Trim recording",
     "cutFrom": "Start",
     "cutTo": "End",
@@ -161,6 +165,8 @@ window.GLASOLOM_TRANSLATIONS = {
     "videoUnsupported": "Video export is not supported in this browser"
   },
   "ru": {
+    "exportCut": "✂ Экспорт IN–OUT",
+    "exportCutInProgress": "Экспорт выбранного фрагмента IN–OUT. Файл сохранится автоматически.",
     "cutHeading": "CUT / Обрезка записи",
     "cutFrom": "Начало",
     "cutTo": "Конец",
@@ -241,6 +247,8 @@ window.GLASOLOM_TRANSLATIONS = {
     "videoUnsupported": "Экспорт видео не поддерживается этим браузером"
   },
   "es": {
+    "exportCut": "✂ Exportar IN–OUT",
+    "exportCutInProgress": "Exportando el tramo IN–OUT. El archivo se guardará automáticamente.",
     "cutHeading": "CUT / Recortar grabación",
     "cutFrom": "Inicio",
     "cutTo": "Fin",
