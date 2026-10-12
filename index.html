@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="sr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0b1014" />
+<title>GLASOLOM — Heilitis Vox Sanatum</title>
+<meta name="description" content="GLASOLOM is a free, browser-based audio and video satire remix studio. Files stay on your device." />
+<style>
+:root{--bg:#0b1014;--surface:#141c21;--surface2:#1b272c;--line:#2c3a41;--ink:#f3f7f4;--muted:#93a7aa;--acid:#ccff64;--acid2:#bce952;--orange:#ffc87a}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);font:15px/1.48 system-ui,-apple-system,"Segoe UI",Arial,sans-serif;color:var(--ink)}button,input{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.43}button:focus-visible,input:focus-visible,.drop:focus-visible{outline:3px solid var(--acid);outline-offset:3px}
+.shell{width:min(1120px,calc(100% - 38px));margin:auto;padding:25px 0 35px}.top{display:flex;align-items:center;justify-content:space-between;gap:15px;padding-bottom:23px;border-bottom:1px solid var(--line)}.brand{display:flex;align-items:center;gap:11px;font-weight:900;letter-spacing:-.8px;font-size:22px}.mark{width:32px;height:32px;background:var(--acid);color:#0b1014;display:grid;place-items:center;border-radius:9px;font-weight:900;transform:rotate(-9deg)}.tag{font-size:11px;letter-spacing:1.8px;color:var(--muted);text-transform:uppercase}.hero{display:grid;grid-template-columns:1.5fr 1fr;gap:22px;align-items:end;padding:32px 0 27px}.hero h1{font-size:clamp(36px,5.1vw,64px);max-width:740px;letter-spacing:-2.9px;line-height:1.04;margin:0}.hero h1 em{font-style:normal;color:var(--acid)}.hero p{color:var(--muted);font-size:15px;max-width:335px;margin:0 0 4px}.cards{display:grid;grid-template-columns:minmax(0,1.27fr) minmax(315px,.85fr);gap:18px}.panel{background:var(--surface);border:1px solid var(--line);border-radius:17px;overflow:hidden}.panel-head{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:18px 20px 16px}.eyebrow{font-size:11px;font-weight:850;letter-spacing:1.7px;text-transform:uppercase;color:var(--muted)}.sub{font-size:12px;color:var(--muted)}.drop{border:1px dashed #63777a;background:linear-gradient(140deg,#213038,#172126);border-radius:12px;margin:0 18px 18px;min-height:130px;display:flex;align-items:center;justify-content:center;gap:13px;padding:21px;cursor:pointer;text-align:left;transition:.2s}.drop:hover,.drop.over{border-color:var(--acid);background:#27362c}.drop .circle{border-radius:50%;width:48px;height:48px;display:grid;place-items:center;border:1px solid #627570;font-size:25px;flex-shrink:0}.drop strong{display:block;font-size:15px}.drop small{color:var(--muted);display:block;margin-top:4px;font-size:12px}.player{padding:0 18px 18px}.screen{border-radius:11px;border:1px solid var(--line);overflow:hidden;position:relative;background:#06090a;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center}canvas{display:block;width:100%;height:100%;object-fit:contain}.flag{position:absolute;top:12px;left:12px;background:#10171de6;color:#f4f7ef;font-size:10px;font-weight:800;letter-spacing:.9px;padding:6px 10px;border-radius:5px;border:1px solid #ffffff3b}.control-row{display:flex;gap:10px;align-items:center;margin-top:12px}.play{border:0;background:var(--acid);color:#111a12;padding:11px 18px;border-radius:9px;min-width:103px;font-weight:800}.play:hover:not(:disabled),.export:hover:not(:disabled){background:#e3ffaf}.seek{-webkit-appearance:none;appearance:none;accent-color:var(--acid);width:100%;height:5px;background:#435056;border-radius:20px;cursor:pointer}.clock{color:var(--muted);white-space:nowrap;font-size:12px;font-variant-numeric:tabular-nums}.filename{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:230px}.mixer{padding:0 19px 20px}.presets{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:12px}.preset{background:#1e292f;border:1px solid #38464e;color:var(--ink);border-radius:10px;text-align:left;padding:12px;min-height:74px;transition:.2s}.preset:hover{border-color:#98b05e}.preset.active{background:#27352b;border-color:var(--acid);box-shadow:inset 0 0 0 1px #ccff6466}.preset b{display:block;font-size:14px}.preset span{display:block;font-size:11px;color:var(--muted);margin-top:2px}.group-heading{display:flex;justify-content:space-between;align-items:center;margin:22px 0 8px}.reset{border:0;background:none;color:var(--acid);font-size:12px;padding:3px}.param{padding:12px 0;border-bottom:1px solid #2a383e}.param:last-child{border:0}.param-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px}.param label{font-weight:650;font-size:13px}.number{background:#223037;border:1px solid #415057;color:var(--acid);border-radius:6px;padding:2px 8px;font-size:12px;font-weight:800;font-variant-numeric:tabular-nums}.range{width:100%;accent-color:var(--acid);cursor:pointer}.actions{margin-top:16px;display:grid;grid-template-columns:1fr;gap:9px}.export{background:var(--acid);border:0;color:#141b10;padding:14px 15px;font-weight:850;border-radius:9px;display:flex;justify-content:center;align-items:center;gap:8px}.tiny{font-size:11px;color:var(--muted);margin:0}.info{margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:12px}.info>div{background:#10191d;border:1px solid var(--line);border-radius:12px;padding:14px 16px;color:var(--muted);font-size:12px}.info b{color:var(--ink);display:block;margin-bottom:6px}.notice{font-size:12px;margin:14px 0 0;min-height:20px;color:var(--orange)}.foot{margin-top:20px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:16px;padding-top:14px;font-size:11px;color:var(--muted)}.kbd{display:inline-block;padding:2px 5px;border:1px solid #576266;border-radius:4px}#input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}#media{display:none}
+@media(max-width:820px){.hero{grid-template-columns:1fr;gap:12px}.hero p{max-width:580px}.cards{grid-template-columns:1fr}.mixer{padding-bottom:25px}}@media(max-width:540px){.shell{width:calc(100% - 24px);padding-top:15px}.brand{font-size:20px}.tag{font-size:9px;letter-spacing:1px}.hero{padding-top:25px}.hero h1{letter-spacing:-1.7px}.info{grid-template-columns:1fr}.control-row{flex-wrap:wrap}.seek{flex:1 1 100%;order:2}.clock{margin-left:auto}.drop{min-height:117px}}
+/* v2: navigation, donation, consent and longer display names */
+.top{flex-wrap:wrap}.head-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-left:auto}
+.lang{background:#1b272c;color:var(--ink);border:1px solid #44565d;border-radius:8px;padding:9px 10px;min-width:124px}
+.kofi{display:inline-flex;text-decoration:none;align-items:center;justify-content:center;white-space:nowrap;background:var(--acid);color:#111a12;border-radius:8px;padding:9px 12px;font-size:12px;font-weight:800}
+.kofi:hover{background:#e3ffaf}.kofi[hidden]{display:none}
+.hero h1{font-size:clamp(34px,4.6vw,59px);line-height:1.09}.hero{grid-template-columns:1.48fr 1fr}.presets{grid-template-columns:repeat(2,minmax(0,1fr))}
+.disclaimer{margin-top:15px;border:1px solid #48605b;border-radius:13px;padding:17px 19px;background:#162421;color:#b7c9c7;font-size:12px}
+.disclaimer b{color:var(--acid);font-size:13px;display:block;margin-bottom:5px}.disclaimer p{margin:0 0 8px}.disclaimer p:last-child{margin-bottom:0}
+.foot a{color:var(--acid)}.foot{flex-wrap:wrap;align-items:center}.footer-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+@media(max-width:620px){.top{gap:12px}.brand{font-size:21px}.tag{display:none}.head-actions{width:100%;margin:0;justify-content:space-between}.hero h1{font-size:clamp(32px,9vw,49px);letter-spacing:-1.5px}}
+</style>
+</head>
+<body>
+<div class="shell">
+ <header class="top"><div class="brand"><span class="mark">~</span>GLASOLOM<span style="color:var(--acid)">.</span></div><div class="tag">AUDIO SATIRE LAB · V2</div><div class="head-actions"><label for="language" class="eyebrow" data-i18n="languageLabel">Jezik</label><select id="language" class="lang" aria-label="Language"><option value="sr">Srpski</option><option value="en">English</option><option value="ru">Русский</option><option value="es">Español</option></select><a id="kofiTop" class="kofi" hidden target="_blank" rel="noopener noreferrer" data-i18n="kofi">☕ Podrži na Ko-fi</a></div></header>
+ <section class="hero"><h1><em>Heilitis Vox Sanatum</em></h1><p data-i18n="heroBody">Ubaci audio ili video. Izaberi komični efekat. Eksportuj rezultat. Fajl ostaje u tvom pregledaču.</p></section>
+ <div class="cards">
+  <section class="panel">
+   <div class="panel-head"><span class="eyebrow" data-i18n="sourceHeader">01 / Izvorni materijal</span><span class="sub filename" id="fileName" data-i18n="noFile">Nema učitanog fajla</span></div>
+   <div class="drop" id="drop" role="button" tabindex="0"><div class="circle">＋</div><div><strong data-i18n="dropTitle">Izaberi snimak ili ga prevuci ovde</strong><small data-i18n="dropHint">MP4, WebM, MP3, WAV i drugi formati koje Chrome podržava</small></div></div>
+   <input id="input" type="file" accept="audio/*,video/*,.m4a,.wav,.mp3,.mp4,.webm,.mov"/>
+   <div class="player"><div class="screen"><canvas id="canvas" width="960" height="540"></canvas></div>
+   <div class="control-row"><button id="play" class="play" disabled data-i18n="play">▶ Pusti</button><input id="seek" class="seek" type="range" min="0" max="1000" value="0" disabled aria-label="Pozicija snimka"><span class="clock" id="clock">00:00 / 00:00</span></div>
+   </div><video id="media" preload="auto" playsinline></video>
+  </section>
+  <section class="panel"><div class="mixer"><div class="panel-head" style="padding-left:0;padding-right:0"><span class="eyebrow" data-i18n="labHeader">02 / Laboratorija</span><span class="sub" data-i18n="realTime">Obrada u realnom vremenu</span></div>
+   <div class="presets">
+    <button class="preset active" data-preset="duck"><b data-i18n="duckName">🦆 Patkica</b><span data-i18n="duckDesc">Visok, nazalan, apsurdan</span></button>
+    <button class="preset" data-preset="alien"><b data-i18n="alienName">👽 Svemirac</b><span data-i18n="alienDesc">Neobičan i talasast</span></button>
+    <button class="preset" data-preset="robot"><b data-i18n="robotName">🤖 Pokvareni robot</b><span data-i18n="robotDesc">Mehanički, metalni zvuk</span></button>
+    <button class="preset" data-preset="helium"><b data-i18n="heliumName">🎈 Helijum</b><span data-i18n="heliumDesc">Ubrzan ton, isti tempo</span></button>
+    <button class="preset" data-preset="vader"><b data-i18n="vaderName">🌑 Darth Vader · stil</b><span data-i18n="vaderDesc">Dubok, taman, mehanički</span></button>
+    <button class="preset" data-preset="voldemort"><b data-i18n="voldemortName">🐍 Lord Voldemort · stil</b><span data-i18n="voldemortDesc">Šapat, hladan i rezonantan</span></button>
+    <button class="preset" data-preset="baby"><b data-i18n="babyName">🍼 Bebeći glas</b><span data-i18n="babyDesc">Sitno, visoko, komično</span></button>
+    <button class="preset" data-preset="miniboss"><b data-i18n="miniName">🧸 Mini šef</b><span data-i18n="miniDesc">Dečiji autoritet kao karikatura</span></button>
+    <button class="preset" data-preset="flanger"><b data-i18n="swirlName">🌀 Vrtlog</b><span data-i18n="swirlDesc">Flanger i čudne oscilacije</span></button>
+    <button class="preset" data-preset="clean"><b data-i18n="originalName">◯ Original</b><span data-i18n="originalDesc">Bez efekata</span></button>
+   </div>
+   <div class="group-heading"><span class="eyebrow" data-i18n="tuneHeader">03 / Fino podešavanje</span><button class="reset" id="reset" type="button" data-i18n="reset">Vrati preset</button></div>
+   <div class="param"><div class="param-top"><label for="pitch" data-i18n="pitch">Visina glasa · Pitch</label><span class="number" id="pitchNum">+7.0 st</span></div><input class="range" type="range" id="pitch" min="-12" max="12" step="0.5" value="7" /></div>
+   <div class="param"><div class="param-top"><label for="flanger" data-i18n="flanger">Vrtloženje · Flanger</label><span class="number" id="flangerNum">12%</span></div><input class="range" type="range" id="flanger" min="0" max="100" step="1" value="12" /></div>
+   <div class="param"><div class="param-top"><label for="ring" data-i18n="ring">Robotska modulacija</label><span class="number" id="ringNum">3%</span></div><input class="range" type="range" id="ring" min="0" max="100" step="1" value="3" /></div>
+   <div class="actions"><button id="export" class="export" disabled><span>⬇</span><span id="exportText" data-i18n="export">Eksportuj obrađeni snimak</span></button><p class="tiny" id="format" data-i18n="exportNote">Export ide u MP4/WebM, zavisno od podrške pregledača. Snimak se obrađuje dok traje reprodukcija.</p></div>
+  </div></section>
+ </div>
+ <div class="info"><div><b data-i18n="privacyHead">Privatnost</b><span data-i18n="privacyBody">Audio i video se procesiraju u tvom pregledaču. Nema naloga, servera ni upload-a na internet.</span></div><div><b data-i18n="satireHead">Transparentna satira</b><span data-i18n="satireBody">Na izvezenom videu stoji oznaka „PARODIJA · IZMENJEN ZVUK“. Reči se ne dodaju, ne izbacuju i ne menjaju.</span></div></div>
+ <aside class="disclaimer" role="note" aria-label="Disclaimer">
+  <b data-i18n="disclaimerHead">Napomena o satiri i odgovornoj upotrebi</b>
+  <p data-i18n="disclaimerBody">GLASOLOM je nezavisan alat za humor, satiru, parodiju i kreativnu obradu zvuka. Nije napravljen radi vređanja, omalovažavanja, uznemiravanja ili diskriminacije bilo koje osobe ili grupe. Korisnik je odgovoran za materijal koji obrađuje, pravo da ga koristi i način objavljivanja.</p>
+  <p data-i18n="disclaimerDetail">Izmenjene snimke jasno označite kao parodiju; ne predstavljajte ih kao autentične izjave i ne menjajte kontekst u svrhu obmane. Tematski glasovni preseti nisu zvanično povezani sa filmskim franšizama i ne reprodukuju originalne glasovne snimke.</p>
+ </aside>
+ <p id="status" class="notice" role="status" aria-live="polite"></p>
+ <footer class="foot"><span data-i18n="footerProject">GLASOLOM · eksperimentalni projekat</span><div class="footer-actions"><span data-i18n="footerBrowser">Preporučeni pregledač: Chrome / Edge</span><a id="kofiFooter" href="#" hidden target="_blank" rel="noopener noreferrer" data-i18n="kofi">☕ Podrži na Ko-fi</a></div></footer>
+</div>
+<script src="config.js"></script>
+<script src="i18n.js"></script>
+<script>
+'use strict';
+const LANGUAGES=window.GLASOLOM_TRANSLATIONS;
+let currentLanguage='sr';
+const t=(key,variables={})=>{
+ let phrase=LANGUAGES[currentLanguage]?.[key] || LANGUAGES.en[key] || key;
+ return phrase.replace(/\{(\w+)\}/g,(match,k)=>String(variables[k]??match));
+};
+function translateUI(lang){
+ currentLanguage=LANGUAGES[lang]?lang:'sr';document.documentElement.lang=currentLanguage;
+ document.getElementById('language').value=currentLanguage;
+ for(const el of document.querySelectorAll('[data-i18n]')) el.textContent=t(el.dataset.i18n);
+ if(file){$('fileName').textContent=file.name;document.querySelector('#drop strong').dataset.i18n='dropChange';document.querySelector('#drop strong').textContent=t('dropChange');}
+ if(recording) $('exportText').textContent=t('stopExport');
+ else $('exportText').textContent=t('export');
+ $('play').textContent=t(media && !media.paused?'pause':'play');
+ $('seek').setAttribute('aria-label',t('seekLabel'));
+ document.title='GLASOLOM — Heilitis Vox Sanatum';
+}
+function initDonations(){
+ const url=window.GLASOLOM_CONFIG?.koFiUrl||'';
+ if(!/^https:\/\/ko-fi\.com\/[a-zA-Z0-9_-]+(?:\/.*)?$/i.test(url)) return;
+ for(const id of ['kofiTop','kofiFooter']){const a=document.getElementById(id);a.href=url;a.hidden=false;}
+}
+
+// AudioWorklet: two crossfaded granular delay heads. Changes pitch without changing playback speed.
+const pitchProcessor = `
+class GranularPitchProcessor extends AudioWorkletProcessor {
+ constructor() {super();this.len=65536;this.buffers=[new Float32Array(this.len),new Float32Array(this.len)];this.write=0;this.phase=0;this.ratio=1;this.target=1;this.grain=Math.floor(sampleRate*.085);this.port.onmessage=e=>{if(e.data&&e.data.ratio)this.target=Math.min(2.1,Math.max(.48,e.data.ratio));};}
+ read(b,idx){let x=(idx+this.len*4)%this.len,i=Math.floor(x),frac=x-i;return b[i]*(1-frac)+b[(i+1)%this.len]*frac;}
+ process(inputs,outputs){let input=inputs[0],out=outputs[0];if(!out||!out.length)return true;let n=out[0].length;for(let i=0;i<n;i++){
+  this.ratio+=.00038*(this.target-this.ratio);
+  const phase=this.phase/this.grain,phase2=(phase+.5)%1;
+  let diff=Math.abs(this.ratio-1)*this.grain;
+  const delay1=256+(this.ratio>=1?(1-phase):phase)*diff;
+  const delay2=256+(this.ratio>=1?(1-phase2):phase2)*diff;
+  const w1=Math.pow(Math.sin(Math.PI*phase),2),w2=Math.pow(Math.sin(Math.PI*phase2),2);
+  for(let c=0;c<out.length;c++){
+   let ib=input[c]||input[0];let x=ib?ib[i]||0:0;let b=this.buffers[Math.min(c,1)];b[this.write]=x;
+   if(Math.abs(this.ratio-1)<.003){out[c][i]=x;}else{let a=this.read(b,this.write-delay1),z=this.read(b,this.write-delay2);out[c][i]=(a*w1+z*w2)/(w1+w2+1e-10);}
+  }
+  this.write=(this.write+1)%this.len;this.phase=(this.phase+1)%this.grain;
+ }return true;}
+}
+registerProcessor('granular-pitch',GranularPitchProcessor);
+`;
+const presets={
+ duck:{pitch:7,flanger:12,ring:3,presence:7,treble:3,ringHz:29,flangeHz:.34},
+ alien:{pitch:-3,flanger:49,ring:28,presence:-3,treble:-1,ringHz:38,flangeHz:.29},
+ robot:{pitch:-.5,flanger:18,ring:83,presence:1,treble:0,ringHz:70,flangeHz:.8},
+ helium:{pitch:10,flanger:3,ring:0,presence:2,treble:5,ringHz:50,flangeHz:.3},
+ vader:{pitch:-7.5,flanger:9,ring:12,presence:-5,treble:-9,ringHz:35,flangeHz:.23},
+ voldemort:{pitch:-4,flanger:34,ring:9,presence:1,treble:-5,ringHz:19,flangeHz:.24},
+ baby:{pitch:11.5,flanger:4,ring:0,presence:6,treble:6,ringHz:29,flangeHz:.28},
+ miniboss:{pitch:8,flanger:17,ring:2,presence:9,treble:4,ringHz:36,flangeHz:.42},
+ flanger:{pitch:2,flanger:90,ring:24,presence:3,treble:2,ringHz:24,flangeHz:1.6},
+ clean:{pitch:0,flanger:0,ring:0,presence:0,treble:0,ringHz:30,flangeHz:.3}
+};
+const $=id=>document.getElementById(id);
+const media=$('media'),canvas=$('canvas'),cv=canvas.getContext('2d');
+const controls={pitch:$('pitch'),flanger:$('flanger'),ring:$('ring')};
+let currentPreset='duck',file=null,fileUrl='',isVideo=false,audio=null,worklet=null,pitchFallback=null,presence=null,treble=null,flangeWet=null,flangeDry=null,flangeOsc=null,ringDry=null,ringDepth=null,ringOsc=null,analyser=null,recDest=null,recorder=null,chunks=[],recording=false,downloadOnStop=false,exportMime='',exportExt='webm',capStream=null,fxReady=false;
+const setStatus=(s,warning=false)=>{$('status').textContent=s;$('status').style.color=warning?'#ffc87a':'#a9d7a1';};
+const formatTime=s=>{if(!Number.isFinite(s))return '00:00';s=Math.floor(s);return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');};
+function setPreset(name){currentPreset=name;document.querySelectorAll('.preset').forEach(b=>b.classList.toggle('active',b.dataset.preset===name));const p=presets[name];for(const id of ['pitch','flanger','ring'])controls[id].value=p[id];applyFx();}
+function applyFx(){const p=presets[currentPreset],v={pitch:+controls.pitch.value,flanger:+controls.flanger.value/100,ring:+controls.ring.value/100};$('pitchNum').textContent=(v.pitch>=0?'+':'')+v.pitch.toFixed(1)+' st';$('flangerNum').textContent=Math.round(v.flanger*100)+'%';$('ringNum').textContent=Math.round(v.ring*100)+'%';if(!fxReady)return;
+ if(worklet)worklet.port.postMessage({ratio:Math.pow(2,v.pitch/12)});
+ else if(pitchFallback)pitchFallback.setPitch(v.pitch);
+ const t=audio.currentTime,change=(p,value)=>p.setTargetAtTime(value,t,.025);
+ change(presence.gain,p.presence);change(treble.gain,p.treble);
+ change(flangeWet.gain,v.flanger*.84);change(flangeDry.gain,1);
+ change(ringDry.gain,1-v.ring*.46);change(ringDepth.gain,v.ring*.88);
+ change(flangeOsc.frequency,p.flangeHz);change(ringOsc.frequency,p.ringHz);
+}
+// Fallback pitch shifter implemented exclusively with native Web Audio nodes.
+// Two sawtooth-modulated delay lines with Hanning crossfades: pitch changes, speed stays fixed.
+function createPitchFallback(ctx, source){
+ const period=.082, n=Math.round(period*ctx.sampleRate), ramp=ctx.createBuffer(1,n,ctx.sampleRate),window=ctx.createBuffer(1,n,ctx.sampleRate);
+ for(let i=0;i<n;i++){const phase=i/n;ramp.getChannelData(0)[i]=phase-.5;window.getChannelData(0)[i]=Math.pow(Math.sin(Math.PI*phase),2);}
+ const bus=ctx.createGain(),heads=[];
+ for(let i=0;i<2;i++){
+  const delay=ctx.createDelay(.3),amp=ctx.createGain(),gain=ctx.createGain();gain.gain.value=0;source.connect(delay);delay.connect(gain);gain.connect(bus);
+  const rampSource=ctx.createBufferSource(),windowSource=ctx.createBufferSource();rampSource.buffer=ramp;windowSource.buffer=window;rampSource.loop=true;windowSource.loop=true;
+  rampSource.connect(amp);amp.connect(delay.delayTime);windowSource.connect(gain.gain);
+  const start=ctx.currentTime+.01;rampSource.start(start,(i*.5)*period);windowSource.start(start,(i*.5)*period);
+  heads.push({delay,amp});
+ }
+ return {out:bus,setPitch(semitones){const ratio=Math.pow(2,semitones/12),delta=(1-ratio)*period,t=ctx.currentTime;for(const head of heads){head.amp.gain.setTargetAtTime(delta,t,.012);head.delay.delayTime.setTargetAtTime(.009+Math.abs(delta)/2,t,.012);}}};
+}
+async function initAudio(){if(fxReady){if(audio.state!=='running')await audio.resume();return;}
+ audio=new(window.AudioContext||window.webkitAudioContext)({latencyHint:'interactive'});
+ let input=audio.createMediaElementSource(media),previous=input;
+ try {if(!audio.audioWorklet)throw Error('no worklet');const moduleUrl=URL.createObjectURL(new Blob([pitchProcessor],{type:'application/javascript'}));try{await audio.audioWorklet.addModule(moduleUrl);}finally{URL.revokeObjectURL(moduleUrl);}worklet=new AudioWorkletNode(audio,'granular-pitch',{outputChannelCount:[2]});previous.connect(worklet);previous=worklet;}catch(e){console.warn('Using native Web Audio pitch shifter:',e);worklet=null;pitchFallback=createPitchFallback(audio,previous);previous=pitchFallback.out;}
+ const high=audio.createBiquadFilter();high.type='highpass';high.frequency.value=75;
+ presence=audio.createBiquadFilter();presence.type='peaking';presence.frequency.value=1050;presence.Q.value=1;
+ treble=audio.createBiquadFilter();treble.type='highshelf';treble.frequency.value=2800;
+ previous.connect(high);high.connect(presence);presence.connect(treble);
+ const flangeDelay=audio.createDelay(.08);flangeDelay.delayTime.value=.008;
+ flangeOsc=audio.createOscillator();const flangeDepth=audio.createGain();flangeDepth.gain.value=.005;flangeOsc.connect(flangeDepth);flangeDepth.connect(flangeDelay.delayTime);flangeOsc.start();
+ flangeDry=audio.createGain();flangeWet=audio.createGain();const ringBus=audio.createGain();treble.connect(flangeDry);treble.connect(flangeDelay);flangeDelay.connect(flangeWet);flangeDry.connect(ringBus);flangeWet.connect(ringBus);
+ ringDry=audio.createGain();const ringGain=audio.createGain();ringGain.gain.value=0;ringDepth=audio.createGain();ringOsc=audio.createOscillator();ringOsc.type='sine';ringOsc.connect(ringDepth);ringDepth.connect(ringGain.gain);ringOsc.start();
+ ringBus.connect(ringDry);ringBus.connect(ringGain);
+ const comp=audio.createDynamicsCompressor();comp.threshold.value=-15;comp.knee.value=20;comp.ratio.value=3;comp.attack.value=.003;comp.release.value=.18;
+ ringDry.connect(comp);ringGain.connect(comp);
+ const master=audio.createGain();master.gain.value=.85;analyser=audio.createAnalyser();analyser.fftSize=256;comp.connect(master);master.connect(analyser);
+ recDest=audio.createMediaStreamDestination();analyser.connect(audio.destination);analyser.connect(recDest);
+ fxReady=true;applyFx();await audio.resume();setStatus(t('audioReady'));
+}
+function setFile(f){if(!f)return;if(recording){setStatus(t('finishExport'),true);return;}if(!(f.type.startsWith('audio/')||f.type.startsWith('video/')||/\.(mp3|wav|m4a|mp4|mov|webm|ogg)$/i.test(f.name))){setStatus(t('chooseAV'),true);return;}
+ if(fileUrl)URL.revokeObjectURL(fileUrl);file=f;fileUrl=URL.createObjectURL(f);isVideo=f.type.startsWith('video/')||/\.(mp4|mov|webm)$/i.test(f.name);
+ media.pause();media.src=fileUrl;media.load();$('fileName').textContent=f.name;$('drop').querySelector('strong').dataset.i18n='dropChange';$('drop').querySelector('strong').textContent=t('dropChange');$('play').disabled=false;$('export').disabled=false;$('seek').value=0;$('seek').disabled=false;setStatus(t('fileLoaded',{name:f.name}));
+}
+$('drop').addEventListener('click',()=>$('input').click());$('drop').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();$('input').click();}});$('input').addEventListener('change',e=>setFile(e.target.files[0]));
+for(const name of ['dragenter','dragover'])$('drop').addEventListener(name,e=>{e.preventDefault();$('drop').classList.add('over');});for(const name of ['dragleave','drop'])$('drop').addEventListener(name,e=>{e.preventDefault();$('drop').classList.remove('over');});$('drop').addEventListener('drop',e=>setFile(e.dataTransfer.files[0]));
+document.querySelectorAll('.preset').forEach(b=>b.addEventListener('click',()=>setPreset(b.dataset.preset)));$('reset').addEventListener('click',()=>setPreset(currentPreset));Object.values(controls).forEach(el=>el.addEventListener('input',applyFx));
+$('play').addEventListener('click',async()=>{if(!file||recording)return;try{await initAudio();if(media.paused){await media.play();}else media.pause();}catch(e){setStatus(t('playError',{message:e.message}),true);}});
+media.addEventListener('play',()=>{$('play').textContent=t('pause');});media.addEventListener('pause',()=>{$('play').textContent=t('play');});media.addEventListener('error',()=>{if(file)setStatus(t('decodeError'),true);});
+media.addEventListener('loadedmetadata',()=>{if(isVideo&&media.videoWidth&&media.videoHeight){let w=Math.min(1280,media.videoWidth),h=Math.round(w*media.videoHeight/media.videoWidth);canvas.width=w;canvas.height=h;}else{canvas.width=960;canvas.height=540;}syncClock();});
+function syncClock(){const d=media.duration||0;$('clock').textContent=formatTime(media.currentTime)+' / '+formatTime(d);if(d&&Number.isFinite(d))$('seek').value=Math.round(media.currentTime/d*1000);}
+$('seek').addEventListener('input',e=>{if(!recording&&Number.isFinite(media.duration))media.currentTime=(+e.target.value/1000)*media.duration;syncClock();});
+function draw(){let w=canvas.width,h=canvas.height;cv.fillStyle='#071014';cv.fillRect(0,0,w,h);
+ if(isVideo&&file&&media.readyState>=2&&media.videoWidth){let vw=media.videoWidth,vh=media.videoHeight,scale=Math.min(w/vw,h/vh),dw=vw*scale,dh=vh*scale;try{cv.drawImage(media,(w-dw)/2,(h-dh)/2,dw,dh);}catch(e){}}
+ else{const bars=65,bw=w*.65/bars,left=w*.175,data=new Uint8Array(128);if(analyser)analyser.getByteFrequencyData(data);
+ cv.save();for(let i=0;i<bars;i++){let q=data[Math.floor(i*data.length/bars)]/255;let t=(!file?0.08:(media.paused?.08:.18))+q*.75;let bh=Math.max(5,t*(h*.63));cv.fillStyle=i%4===0?'#cfff65':'#83b7a5';cv.fillRect(left+i*bw,h/2-bh/2,bw*.55,bh);}cv.restore();cv.fillStyle='#bdcacc';cv.font=`bold ${Math.floor(h*.055)}px system-ui`;cv.textAlign='center';cv.fillText(file?t('previewTitle'):t('previewUpload'),w/2,h*.8);}
+ // Burn an unmistakable label into recorded video frames.
+ if(file){let fs=Math.max(12,Math.round(w*.016));cv.font=`800 ${fs}px system-ui`;let label=t('watermark');let pad=fs*.55,textw=cv.measureText(label).width;cv.fillStyle='#0a1111dd';cv.fillRect(14,14,textw+pad*2,fs*2.2);cv.fillStyle='#e3ffbc';cv.textAlign='left';cv.fillText(label,14+pad,14+fs*1.48);}
+ syncClock();requestAnimationFrame(draw);}
+requestAnimationFrame(draw);
+function getRecordingType(video){const choices=video?['video/mp4;codecs=avc1.42E01E,mp4a.40.2','video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm']:['audio/mp4;codecs=mp4a.40.2','audio/webm;codecs=opus','audio/webm'];for(const t of choices)if(MediaRecorder.isTypeSupported(t))return t;return '';}
+$('export').addEventListener('click',async()=>{if(recording){stopRecording();return;}if(!file)return;
+ try{if(typeof MediaRecorder==='undefined')throw Error(t('mediaRecorderUnsupported'));await initAudio();
+ // Always export from the beginning, retaining source timing.
+ media.pause();media.currentTime=0;
+ if(isVideo&&!canvas.captureStream)throw Error(t('videoUnsupported'));
+ const tracks=[...recDest.stream.getAudioTracks()];if(isVideo){capStream=canvas.captureStream(30);tracks.push(...capStream.getVideoTracks());}
+ const stream=new MediaStream(tracks);exportMime=getRecordingType(isVideo);exportExt=exportMime.includes('mp4')?'mp4':'webm';
+ recorder=new MediaRecorder(stream,exportMime?{mimeType:exportMime,videoBitsPerSecond:4000000,audioBitsPerSecond:192000}:{videoBitsPerSecond:4000000,audioBitsPerSecond:192000});chunks=[];downloadOnStop=true;
+ recorder.addEventListener('dataavailable',e=>{if(e.data&&e.data.size)chunks.push(e.data);});
+ recorder.addEventListener('stop',()=>{recording=false;$('exportText').textContent=t('export');$('seek').disabled=false;$('play').disabled=false;
+  if(capStream){capStream.getTracks().forEach(t=>t.stop());capStream=null;}
+  if(!chunks.length){setStatus(t('noExportData'),true);return;}
+  const blob=new Blob(chunks,{type:exportMime||recorder.mimeType});let name=file.name.replace(/\.[^.]+$/,'').replace(/[^a-zA-Z0-9_\-\u00C0-\u024F\u0400-\u04FF]+/g,'_');
+  const link=document.createElement('a'),url=URL.createObjectURL(blob);link.href=url;link.download=(name||'snimak')+'_GLASOLOM.'+exportExt;document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);
+  setStatus(t('exportDone',{name:link.download,size:(blob.size/1024/1024).toFixed(1)}));
+ });
+ recorder.addEventListener('error',e=>{setStatus(t('recorderError',{message:e.error?.message||t('unknown')}),true);});
+ recorder.start(250);recording=true;$('seek').disabled=true;$('play').disabled=true;$('exportText').textContent=t('stopExport');
+ setStatus(t('exportInProgress'));await media.play();
+ }catch(e){setStatus(t('exportError',{message:e.message}),true);if(recording)stopRecording();}
+});
+function stopRecording(){if(recorder&&recorder.state!=='inactive')recorder.stop();media.pause();}
+media.addEventListener('ended',()=>{if(recording)stopRecording();});
+document.getElementById('language').addEventListener('change',e=>translateUI(e.target.value));
+initDonations();
+translateUI('sr');
+setPreset('duck');
+</script>
+</body>
+</html>
