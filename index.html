@@ -292,7 +292,7 @@ function toggleExportButtons(active){
 }
 async function startExport(onlyRange=false){
  if(window.GLASOLOM_iOS?.handles(file,isVideo)){await window.GLASOLOM_iOS.exportAudio(onlyRange);return;}
- if(recording{stopRecording();return;}
+ if(recording){stopRecording();return;}
  if(!file||micPending||micRecorder?.state==='recording')return;
  try{
   if(typeof MediaRecorder==='undefined')throw new Error(t('mediaRecorderUnsupported'));
