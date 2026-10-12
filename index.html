@@ -16,12 +16,12 @@
 .lang{background:#1b272c;color:var(--ink);border:1px solid #44565d;border-radius:8px;padding:9px 10px;min-width:124px}
 .kofi{display:inline-flex;text-decoration:none;align-items:center;justify-content:center;white-space:nowrap;background:var(--acid);color:#111a12;border-radius:8px;padding:9px 12px;font-size:12px;font-weight:800}
 .kofi:hover{background:#e3ffaf}.kofi[hidden]{display:none}
+.mic-row{display:flex;align-items:center;gap:10px;margin:-6px 18px 18px;flex-wrap:wrap}.mic-button{border:1px solid #6b878b;background:#20313a;color:var(--ink);border-radius:9px;padding:10px 16px;font-size:13px;font-weight:750}.mic-button:hover:not(:disabled){border-color:var(--acid)}.mic-button.active{background:#7e2633;border-color:#fb7588;color:white}.mic-button:disabled{opacity:.5;cursor:wait}.mic-note{font-size:11px;color:var(--muted);flex:1}.mic-timer{font-size:12px;color:#ffc4cd;font-variant-numeric:tabular-nums}.range-tools{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin:10px 0 2px}.range-tools button{background:#263239;color:var(--ink);border:1px solid #475960;border-radius:7px;font-size:11px;padding:8px 10px;cursor:pointer}.range-tools button:hover:not(:disabled){border-color:var(--acid)}.range-tools button:disabled{opacity:.5;cursor:not-allowed}.range-display{font-size:11px;color:var(--acid);margin-left:auto;font-variant-numeric:tabular-nums}.export.secondary-export{background:#253b36;color:#d7fdb8;border:1px solid #537c62}.export.secondary-export:hover:not(:disabled){background:#345548}
 .hero h1{font-size:clamp(34px,4.6vw,59px);line-height:1.09}.hero{grid-template-columns:1.48fr 1fr}.presets{grid-template-columns:repeat(2,minmax(0,1fr))}
 .disclaimer{margin-top:15px;border:1px solid #48605b;border-radius:13px;padding:17px 19px;background:#162421;color:#b7c9c7;font-size:12px}
 .disclaimer b{color:var(--acid);font-size:13px;display:block;margin-bottom:5px}.disclaimer p{margin:0 0 8px}.disclaimer p:last-child{margin-bottom:0}
 .foot a{color:var(--acid)}.foot{flex-wrap:wrap;align-items:center}.footer-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
 @media(max-width:620px){.top{gap:12px}.brand{font-size:21px}.tag{display:none}.head-actions{width:100%;margin:0;justify-content:space-between}.hero h1{font-size:clamp(32px,9vw,49px);letter-spacing:-1.5px}}
-.cut-panel{margin:0 18px 18px;padding:14px;background:#10191d;border:1px solid var(--line);border-radius:12px}.cut-head{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}.cut-summary{color:var(--acid);font-size:12px}.cut-track{height:7px;background:#435056;border-radius:9px;position:relative;margin:15px 0}.cut-highlight{position:absolute;background:var(--acid);height:100%;border-radius:9px}.cut-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.cut-grid label{display:grid;gap:5px;font-size:12px;color:var(--muted)}.cut-grid input{width:100%;accent-color:var(--acid)}.cut-grid input[type=number]{background:#1b272c;color:var(--ink);border:1px solid #44565d;border-radius:7px;padding:7px}.cut-buttons{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.cut-buttons button{border:1px solid #52675d;background:#23322e;color:var(--ink);border-radius:7px;padding:7px;font-size:12px}.export-cut{background:#22372b;color:var(--acid);border:1px solid #98b96c}.export-cut:hover:not(:disabled){background:#304a32}.export-cut:disabled{opacity:.43}
 </style>
 </head>
 <body>
@@ -32,10 +32,12 @@
   <section class="panel">
    <div class="panel-head"><span class="eyebrow" data-i18n="sourceHeader">01 / Izvorni materijal</span><span class="sub filename" id="fileName" data-i18n="noFile">Nema učitanog fajla</span></div>
    <div class="drop" id="drop" role="button" tabindex="0"><div class="circle">＋</div><div><strong data-i18n="dropTitle">Izaberi snimak ili ga prevuci ovde</strong><small data-i18n="dropHint">MP4, WebM, MP3, WAV i drugi formati koje Chrome podržava</small></div></div>
+   <div class="mic-row"><button type="button" class="mic-button" id="recordMic" data-i18n="recordMic" aria-pressed="false">🎙 Snimi zvuk</button><span id="micTimer" class="mic-timer" hidden>00:00</span><span class="mic-note" data-i18n="micNote">Snimi svoj glas mikrofonom, zatim ga obradi presetima.</span></div>
    <input id="input" type="file" accept="audio/*,video/*,.m4a,.wav,.mp3,.mp4,.webm,.mov"/>
    <div class="player"><div class="screen"><canvas id="canvas" width="960" height="540"></canvas></div>
    <div class="control-row"><button id="play" class="play" disabled data-i18n="play">▶ Pusti</button><input id="seek" class="seek" type="range" min="0" max="1000" value="0" disabled aria-label="Pozicija snimka"><span class="clock" id="clock">00:00 / 00:00</span></div>
-   </div><div class="cut-panel"><div class="cut-head"><b class="eyebrow" data-i18n="cutHeading">CUT / Iseci snimak</b><span class="cut-summary" id="cutSummary"></span></div><div class="cut-track"><div class="cut-highlight" id="cutHighlight"></div></div><div class="cut-grid"><label><span data-i18n="cutFrom">Početak</span><input id="cutStart" type="range" min="0" max="1" step="0.01" disabled></label><label><span data-i18n="cutTo">Kraj</span><input id="cutEnd" type="range" min="0" max="1" step="0.01" disabled></label><label><span data-i18n="cutFrom">Početak</span><input id="cutStartNumber" type="number" min="0" step="0.01" disabled></label><label><span data-i18n="cutTo">Kraj</span><input id="cutEndNumber" type="number" min="0" step="0.01" disabled></label></div><div class="cut-buttons"><button id="markIn" disabled data-i18n="markIn">◀ Postavi IN</button><button id="markOut" disabled data-i18n="markOut">Postavi OUT ▶</button><button id="previewCut" disabled data-i18n="previewCut">▶ Pregled isečka</button><button id="resetCut" disabled data-i18n="resetCut">Ceo snimak</button></div><p class="tiny" data-i18n="cutHint">Izaberi interval i izvezi samo taj deo.</p></div><video id="media" preload="auto" playsinline></video>
+   <div class="range-tools"><button id="markIn" disabled data-i18n="markIn" type="button">Označi IN</button><button id="markOut" disabled data-i18n="markOut" type="button">Označi OUT</button><button id="resetRange" disabled data-i18n="resetRange" type="button">Ceo snimak</button><span class="range-display" id="rangeDisplay">IN 00:00 · OUT 00:00</span></div>
+   </div><video id="media" preload="auto" playsinline></video>
   </section>
   <section class="panel"><div class="mixer"><div class="panel-head" style="padding-left:0;padding-right:0"><span class="eyebrow" data-i18n="labHeader">02 / Laboratorija</span><span class="sub" data-i18n="realTime">Obrada u realnom vremenu</span></div>
    <div class="presets">
@@ -54,10 +56,10 @@
    <div class="param"><div class="param-top"><label for="pitch" data-i18n="pitch">Visina glasa · Pitch</label><span class="number" id="pitchNum">+7.0 st</span></div><input class="range" type="range" id="pitch" min="-12" max="12" step="0.5" value="7" /></div>
    <div class="param"><div class="param-top"><label for="flanger" data-i18n="flanger">Vrtloženje · Flanger</label><span class="number" id="flangerNum">12%</span></div><input class="range" type="range" id="flanger" min="0" max="100" step="1" value="12" /></div>
    <div class="param"><div class="param-top"><label for="ring" data-i18n="ring">Robotska modulacija</label><span class="number" id="ringNum">3%</span></div><input class="range" type="range" id="ring" min="0" max="100" step="1" value="3" /></div>
-   <div class="actions"><button id="export" class="export" disabled><span>⬇</span><span id="exportText" data-i18n="export">Eksportuj obrađeni snimak</span></button><button id="exportCut" class="export export-cut" disabled data-i18n="exportCut">✂ Eksportuj IN–OUT</button><button id="exportFast" class="export export-cut" disabled data-i18n="exportFast">⚡ Brzi eksport IN–OUT</button><p class="tiny" id="format" data-i18n="exportNote">Export ide u MP4/WebM, zavisno od podrške pregledača. Snimak se obrađuje dok traje reprodukcija.</p></div>
+   <div class="actions"><button id="export" class="export" disabled><span>⬇</span><span id="exportText" data-i18n="export">Eksportuj obrađeni snimak</span></button><button id="exportRange" class="export secondary-export" disabled><span>⚡</span><span id="exportRangeText" data-i18n="quickExport">Brzi eksport IN–OUT</span></button><p class="tiny" id="format" data-i18n="exportNote">Export ide u MP4/WebM, zavisno od podrške pregledača. Snimak se obrađuje dok traje reprodukcija.</p></div>
   </div></section>
  </div>
- <div class="info"><div><b data-i18n="privacyHead">Privatnost</b><span data-i18n="privacyBody">Audio i video se procesiraju u tvom pregledaču. Nema naloga, servera ni upload-a na internet.</span></div><div><b data-i18n="satireHead">Transparentna satira</b><span data-i18n="satireBody">Nema natpisa preko snimka. Prilikom deljenja naznači da je zvuk izmenjen.</span></div></div>
+ <div class="info"><div><b data-i18n="privacyHead">Privatnost</b><span data-i18n="privacyBody">Audio i video se procesiraju u tvom pregledaču. Nema naloga, servera ni upload-a na internet.</span></div><div><b data-i18n="satireHead">Transparentna satira</b><span data-i18n="satireBody">Na izvezenom videu stoji oznaka „PARODIJA · IZMENJEN ZVUK“. Reči se ne dodaju, ne izbacuju i ne menjaju.</span></div></div>
  <aside class="disclaimer" role="note" aria-label="Disclaimer">
   <b data-i18n="disclaimerHead">Napomena o satiri i odgovornoj upotrebi</b>
   <p data-i18n="disclaimerBody">GLASOLOM je nezavisan alat za humor, satiru, parodiju i kreativnu obradu zvuka. Nije napravljen radi vređanja, omalovažavanja, uznemiravanja ili diskriminacije bilo koje osobe ili grupe. Korisnik je odgovoran za materijal koji obrađuje, pravo da ga koristi i način objavljivanja.</p>
@@ -83,8 +85,11 @@ function translateUI(lang){
  if(file){$('fileName').textContent=file.name;document.querySelector('#drop strong').dataset.i18n='dropChange';document.querySelector('#drop strong').textContent=t('dropChange');}
  if(recording) $('exportText').textContent=t('stopExport');
  else $('exportText').textContent=t('export');
+ $('exportRangeText').textContent=t('quickExport');
+ $('recordMic').textContent=t(micRecorder && micRecorder.state==='recording'?'stopMic':'recordMic');
+ updateRangeDisplay();
  $('play').textContent=t(media && !media.paused?'pause':'play');
- $('seek').setAttribute('aria-label',t('seekLabel'));if(typeof syncCutUI==='function')syncCutUI();
+ $('seek').setAttribute('aria-label',t('seekLabel'));
  document.title='GLASOLOM — Heilitis Vox Sanatum';
 }
 function initDonations(){
@@ -129,7 +134,8 @@ const presets={
 const $=id=>document.getElementById(id);
 const media=$('media'),canvas=$('canvas'),cv=canvas.getContext('2d');
 const controls={pitch:$('pitch'),flanger:$('flanger'),ring:$('ring')};
-let currentPreset='duck',file=null,fileUrl='',isVideo=false,audio=null,worklet=null,pitchFallback=null,presence=null,treble=null,flangeWet=null,flangeDry=null,flangeOsc=null,ringDry=null,ringDepth=null,ringOsc=null,analyser=null,recDest=null,recorder=null,chunks=[],recording=false,downloadOnStop=false,exportMime='',exportExt='webm',capStream=null,fxReady=false,exportMode='manual',requestedExportMode='manual',exportStarting=false,autoStopTimer=null;
+let currentPreset='duck',file=null,fileUrl='',isVideo=false,audio=null,worklet=null,pitchFallback=null,presence=null,treble=null,flangeWet=null,flangeDry=null,flangeOsc=null,ringDry=null,ringDepth=null,ringOsc=null,analyser=null,recDest=null,recorder=null,chunks=[],recording=false,exportMime='',exportExt='webm',capStream=null,fxReady=false;
+let micRecorder=null,micStream=null,micChunks=[],micTick=null,micStart=0,micPending=false,rangeIn=0,rangeOut=null,exportStopAt=null;
 const setStatus=(s,warning=false)=>{$('status').textContent=s;$('status').style.color=warning?'#ffc87a':'#a9d7a1';};
 const formatTime=s=>{if(!Number.isFinite(s))return '00:00';s=Math.floor(s);return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');};
 function setPreset(name){currentPreset=name;document.querySelectorAll('.preset').forEach(b=>b.classList.toggle('active',b.dataset.preset===name));const p=presets[name];for(const id of ['pitch','flanger','ring'])controls[id].value=p[id];applyFx();}
@@ -176,73 +182,170 @@ async function initAudio(){if(fxReady){if(audio.state!=='running')await audio.re
  recDest=audio.createMediaStreamDestination();analyser.connect(audio.destination);analyser.connect(recDest);
  fxReady=true;applyFx();await audio.resume();setStatus(t('audioReady'));
 }
-function setFile(f){if(!f)return;if(recording||exportStarting){setStatus(t('finishExport'),true);return;}if(!(f.type.startsWith('audio/')||f.type.startsWith('video/')||/\.(mp3|wav|m4a|mp4|mov|webm|ogg)$/i.test(f.name))){setStatus(t('chooseAV'),true);return;}
- if(fileUrl)URL.revokeObjectURL(fileUrl);file=f;fileUrl=URL.createObjectURL(f);isVideo=f.type.startsWith('video/')||/\.(mp4|mov|webm)$/i.test(f.name);
- media.pause();media.src=fileUrl;media.load();$('fileName').textContent=f.name;$('drop').querySelector('strong').dataset.i18n='dropChange';$('drop').querySelector('strong').textContent=t('dropChange');$('play').disabled=false;$('export').disabled=false;$('seek').value=0;$('seek').disabled=false;resetCutForFile();setStatus(t('fileLoaded',{name:f.name}));
+function updateRangeDisplay(){
+ const end=Number.isFinite(media.duration)?media.duration:0;
+ const out=rangeOut===null?end:Math.min(rangeOut,end);
+ $('rangeDisplay').textContent=`IN ${formatTime(rangeIn)} · OUT ${formatTime(out)}`;
 }
+function setFile(f){
+ if(!f)return;
+ if(recording||micRecorder?.state==='recording'||micPending){setStatus(t('finishRecording'),true);return;}
+ if(!(f.type.startsWith('audio/')||f.type.startsWith('video/')||/\.(mp3|wav|m4a|mp4|mov|webm|ogg)$/i.test(f.name))){setStatus(t('chooseAV'),true);return;}
+ // .webm also supports audio: let the MIME type override the ambiguous extension.
+ isVideo=f.type.startsWith('video/')||(!f.type.startsWith('audio/')&&/\.(mp4|mov|webm)$/i.test(f.name));
+ media.pause();
+ if(fileUrl)URL.revokeObjectURL(fileUrl);
+ file=f;fileUrl=URL.createObjectURL(f);media.src=fileUrl;media.load();
+ $('fileName').textContent=f.name;$('drop').querySelector('strong').dataset.i18n='dropChange';$('drop').querySelector('strong').textContent=t('dropChange');
+ for(const id of ['play','export','exportRange','seek','markIn','markOut','resetRange'])$(id).disabled=false;
+ $('seek').value=0;rangeIn=0;rangeOut=null;updateRangeDisplay();setStatus(t('fileLoaded',{name:f.name}));
+}
+function preferredMicType(){
+ const candidates=['audio/webm;codecs=opus','audio/mp4;codecs=mp4a.40.2','audio/webm','audio/mp4'];
+ return candidates.find(v=>MediaRecorder.isTypeSupported(v))||'';
+}
+function updateMicUI(active){
+ $('recordMic').textContent=t(active?'stopMic':'recordMic');$('recordMic').classList.toggle('active',active);
+ $('recordMic').setAttribute('aria-pressed',String(active));$('recordMic').disabled=micPending;
+ $('micTimer').hidden=!active;
+}
+$('recordMic').addEventListener('click',async()=>{
+ if(micRecorder?.state==='recording'){micRecorder.stop();return;}
+ if(recording||micPending){setStatus(t('finishRecording'),true);return;}
+ if(!navigator.mediaDevices?.getUserMedia||typeof MediaRecorder==='undefined'){
+  setStatus(t('micUnsupported'),true);return;
+ }
+ micPending=true;$('recordMic').disabled=true;media.pause();
+ try{
+  const stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}});
+  micStream=stream;micChunks=[];
+  const mime=preferredMicType();const instance=new MediaRecorder(stream,mime?{mimeType:mime}:undefined);
+  micRecorder=instance;
+  instance.addEventListener('dataavailable',e=>{if(e.data?.size)micChunks.push(e.data);});
+  instance.addEventListener('stop',()=>{
+   micStream?.getTracks().forEach(track=>track.stop());micStream=null;
+   clearInterval(micTick);micTick=null;
+   micRecorder=null;updateMicUI(false);
+   const type=instance.mimeType||mime||'audio/webm';
+   const blob=new Blob(micChunks,{type});micChunks=[];
+   if(blob.size===0){setStatus(t('micEmpty'),true);return;}
+   const extension=type.includes('mp4')?'m4a':'webm';
+   const name=`glasolom_voice_${new Date().toISOString().replace(/[:.]/g,'-')}.${extension}`;
+   const voiceFile=new File([blob],name,{type});setFile(voiceFile);
+   setStatus(t('micDone'));
+  });
+  instance.addEventListener('error',e=>{setStatus(t('micError',{message:e.error?.message||t('unknown')}),true);if(instance.state!=='inactive')instance.stop();});
+  instance.start(250);micStart=Date.now();
+  micTick=setInterval(()=>{$('micTimer').textContent=formatTime((Date.now()-micStart)/1000);},250);
+  $('micTimer').textContent='00:00';setStatus(t('micRecording'));
+ }catch(e){micStream?.getTracks().forEach(track=>track.stop());micStream=null;micRecorder=null;setStatus(t('micError',{message:e.message}),true);}
+ finally{micPending=false;updateMicUI(micRecorder?.state==='recording');}
+});
 $('drop').addEventListener('click',()=>$('input').click());$('drop').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();$('input').click();}});$('input').addEventListener('change',e=>setFile(e.target.files[0]));
 for(const name of ['dragenter','dragover'])$('drop').addEventListener(name,e=>{e.preventDefault();$('drop').classList.add('over');});for(const name of ['dragleave','drop'])$('drop').addEventListener(name,e=>{e.preventDefault();$('drop').classList.remove('over');});$('drop').addEventListener('drop',e=>setFile(e.dataTransfer.files[0]));
 document.querySelectorAll('.preset').forEach(b=>b.addEventListener('click',()=>setPreset(b.dataset.preset)));$('reset').addEventListener('click',()=>setPreset(currentPreset));Object.values(controls).forEach(el=>el.addEventListener('input',applyFx));
-$('play').addEventListener('click',async()=>{if(!file||recording)return;try{await initAudio();if(media.paused){if(cut.ready&&(media.currentTime<cut.start||media.currentTime>=cut.end-.04))await jumpToCutStart();await media.play();}else media.pause();}catch(e){setStatus(t('playError',{message:e.message}),true);}});
+$('play').addEventListener('click',async()=>{if(!file||recording)return;try{await initAudio();if(media.paused){await media.play();}else media.pause();}catch(e){setStatus(t('playError',{message:e.message}),true);}});
 media.addEventListener('play',()=>{$('play').textContent=t('pause');});media.addEventListener('pause',()=>{$('play').textContent=t('play');});media.addEventListener('error',()=>{if(file)setStatus(t('decodeError'),true);});
-media.addEventListener('loadedmetadata',()=>{if(isVideo&&media.videoWidth&&media.videoHeight){let w=Math.min(1280,media.videoWidth),h=Math.round(w*media.videoHeight/media.videoWidth);canvas.width=w;canvas.height=h;}else{canvas.width=960;canvas.height=540;}syncClock();initializeCut();});
+media.addEventListener('loadedmetadata',()=>{if(isVideo&&media.videoWidth&&media.videoHeight){let w=Math.min(1280,media.videoWidth),h=Math.round(w*media.videoHeight/media.videoWidth);canvas.width=w;canvas.height=h;}else{canvas.width=960;canvas.height=540;}syncClock();updateRangeDisplay();});
 function syncClock(){const d=media.duration||0;$('clock').textContent=formatTime(media.currentTime)+' / '+formatTime(d);if(d&&Number.isFinite(d))$('seek').value=Math.round(media.currentTime/d*1000);}
-$('seek').addEventListener('input',e=>{if(!recording&&Number.isFinite(media.duration)){let v=(+e.target.value/1000)*media.duration;media.currentTime=cut.ready?Math.max(cut.start,Math.min(cut.end,v)):v;}syncClock();});
+$('seek').addEventListener('input',e=>{if(!recording&&Number.isFinite(media.duration))media.currentTime=(+e.target.value/1000)*media.duration;syncClock();});
+$('markIn').addEventListener('click',()=>{if(recording||!file)return;rangeIn=Math.max(0,media.currentTime);if(rangeOut!==null&&rangeOut<=rangeIn)rangeOut=null;updateRangeDisplay();});
+$('markOut').addEventListener('click',()=>{if(recording||!file)return;const candidate=media.currentTime;if(candidate<=rangeIn+.05){setStatus(t('invalidRange'),true);return;}rangeOut=candidate;updateRangeDisplay();});
+$('resetRange').addEventListener('click',()=>{if(recording)return;rangeIn=0;rangeOut=null;updateRangeDisplay();});
 function draw(){let w=canvas.width,h=canvas.height;cv.fillStyle='#071014';cv.fillRect(0,0,w,h);
  if(isVideo&&file&&media.readyState>=2&&media.videoWidth){let vw=media.videoWidth,vh=media.videoHeight,scale=Math.min(w/vw,h/vh),dw=vw*scale,dh=vh*scale;try{cv.drawImage(media,(w-dw)/2,(h-dh)/2,dw,dh);}catch(e){}}
  else{const bars=65,bw=w*.65/bars,left=w*.175,data=new Uint8Array(128);if(analyser)analyser.getByteFrequencyData(data);
  cv.save();for(let i=0;i<bars;i++){let q=data[Math.floor(i*data.length/bars)]/255;let t=(!file?0.08:(media.paused?.08:.18))+q*.75;let bh=Math.max(5,t*(h*.63));cv.fillStyle=i%4===0?'#cfff65':'#83b7a5';cv.fillRect(left+i*bw,h/2-bh/2,bw*.55,bh);}cv.restore();cv.fillStyle='#bdcacc';cv.font=`bold ${Math.floor(h*.055)}px system-ui`;cv.textAlign='center';cv.fillText(file?t('previewTitle'):t('previewUpload'),w/2,h*.8);}
- syncClock();if(recording&&exportMode==='cut'&&cut.ready&&media.currentTime>=cut.end-.015)stopRecording();requestAnimationFrame(draw);}
+ // Burn an unmistakable label into recorded video frames.
+ if(file){let fs=Math.max(12,Math.round(w*.016));cv.font=`800 ${fs}px system-ui`;let label=t('watermark');let pad=fs*.55,textw=cv.measureText(label).width;cv.fillStyle='#0a1111dd';cv.fillRect(14,14,textw+pad*2,fs*2.2);cv.fillStyle='#e3ffbc';cv.textAlign='left';cv.fillText(label,14+pad,14+fs*1.48);}
+ syncClock();requestAnimationFrame(draw);}
 requestAnimationFrame(draw);
 function getRecordingType(video){const choices=video?['video/mp4;codecs=avc1.42E01E,mp4a.40.2','video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm']:['audio/mp4;codecs=mp4a.40.2','audio/webm;codecs=opus','audio/webm'];for(const t of choices)if(MediaRecorder.isTypeSupported(t))return t;return '';}
-$('exportCut').addEventListener('click',()=>{if(!cut.ready||recording||exportStarting||!file)return;requestedExportMode='cut';$('export').click();});
-$('export').addEventListener('click',async()=>{if(recording){stopRecording();return;}if(!file||exportStarting)return;
- exportStarting=true;exportMode=requestedExportMode;requestedExportMode='manual';$('export').disabled=true;$('exportCut').disabled=true;
- try{if(typeof MediaRecorder==='undefined')throw Error(t('mediaRecorderUnsupported'));await initAudio();
- // Export selected interval.
- getCutSelection();media.pause();await jumpToCutStart();
- if(isVideo&&!canvas.captureStream)throw Error(t('videoUnsupported'));
- const tracks=[...recDest.stream.getAudioTracks()];if(isVideo){capStream=canvas.captureStream(30);tracks.push(...capStream.getVideoTracks());}
- const stream=new MediaStream(tracks);exportMime=getRecordingType(isVideo);exportExt=exportMime.includes('mp4')?'mp4':'webm';
- recorder=new MediaRecorder(stream,exportMime?{mimeType:exportMime,videoBitsPerSecond:4000000,audioBitsPerSecond:192000}:{videoBitsPerSecond:4000000,audioBitsPerSecond:192000});chunks=[];downloadOnStop=true;
- recorder.addEventListener('dataavailable',e=>{if(e.data&&e.data.size)chunks.push(e.data);});
- recorder.addEventListener('stop',()=>{const finishedMode=exportMode;recording=false;exportStarting=false;exportMode='manual';$('export').disabled=false;$('exportText').textContent=t('export');cutControls(false);$('seek').disabled=false;$('play').disabled=false;
-  if(capStream){capStream.getTracks().forEach(t=>t.stop());capStream=null;}
-  if(!chunks.length){setStatus(t('noExportData'),true);return;}
-  const blob=new Blob(chunks,{type:exportMime||recorder.mimeType});let name=file.name.replace(/\.[^.]+$/,'').replace(/[^a-zA-Z0-9_\-\u00C0-\u024F\u0400-\u04FF]+/g,'_');
-  const link=document.createElement('a'),url=URL.createObjectURL(blob);link.href=url;link.download=(name||'snimak')+(finishedMode==='cut'?'_GLASOLOM_CUT.':'_GLASOLOM.')+exportExt;document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);
-  setStatus(t('exportDone',{name:link.download,size:(blob.size/1024/1024).toFixed(1)}));
+function waitForMediaEvent(target,event,timeout=10000){
+ return new Promise((resolve,reject)=>{
+  let timer;
+  function cleanup(){clearTimeout(timer);target.removeEventListener(event,onOK);target.removeEventListener('error',onFail);}
+  function onOK(){cleanup();resolve();}
+  function onFail(){cleanup();reject(new Error(t('decodeError')));}
+  target.addEventListener(event,onOK,{once:true});target.addEventListener('error',onFail,{once:true});
+  timer=setTimeout(()=>{cleanup();reject(new Error(t('mediaNotReady')));},timeout);
  });
- recorder.addEventListener('error',e=>{setStatus(t('recorderError',{message:e.error?.message||t('unknown')}),true);});
- recorder.start(250);recording=true;cutControls(true);$('seek').disabled=true;$('play').disabled=true;$('exportText').textContent=t('stopExport');
- setStatus(t(exportMode==='cut'?'exportCutInProgress':'exportInProgress'));await media.play();
-  if(recording&&exportMode==='cut'){
-   const selectedDuration=(cut.end-cut.start)*1000;
-   // Backup timer; media-currentTime checks in both animation and timeupdate are authoritative.
-   autoStopTimer=setTimeout(()=>{if(recording&&exportMode==='cut')stopRecording();},Math.ceil(selectedDuration+150));
-  }
- }catch(e){setStatus(t('exportError',{message:e.message}),true);if(recording)stopRecording();else{exportStarting=false;exportMode='manual';$('export').disabled=false;cutControls(false);}}
-});
-function stopRecording(){if(autoStopTimer!==null){clearTimeout(autoStopTimer);autoStopTimer=null;}if(recorder&&recorder.state!=='inactive')recorder.stop();media.pause();}
+}
+async function prepareExport(start){
+ media.pause();
+ if(media.readyState<1)await waitForMediaEvent(media,'loadedmetadata');
+ const duration=media.duration;
+ if(!Number.isFinite(duration)||duration<=0)throw new Error(t('mediaNotReady'));
+ // Seek must finish *before* MediaRecorder starts. Otherwise the recording begins with muted/empty frames.
+ const safeStart=Math.min(Math.max(0,start),Math.max(0,duration-.05));
+ if(Math.abs(media.currentTime-safeStart)>.015||media.seeking){
+  const seek=waitForMediaEvent(media,'seeked');media.currentTime=safeStart;await seek;
+ }
+ if(media.readyState<3)await waitForMediaEvent(media,'canplay');
+ return safeStart;
+}
+function toggleExportButtons(active){
+ $('exportText').textContent=t(active?'stopExport':'export');
+ $('exportRange').disabled=active||!file;
+ $('play').disabled=active||!file;$('seek').disabled=active||!file;
+ $('recordMic').disabled=active||micPending;
+ for(const id of ['markIn','markOut','resetRange'])$(id).disabled=active||!file;
+}
+async function startExport(onlyRange=false){
+ if(recording){stopRecording();return;}
+ if(!file||micPending||micRecorder?.state==='recording')return;
+ try{
+  if(typeof MediaRecorder==='undefined')throw new Error(t('mediaRecorderUnsupported'));
+  await initAudio();
+  if(isVideo&&!canvas.captureStream)throw new Error(t('videoUnsupported'));
+  const end=Number.isFinite(media.duration)?media.duration:0;
+  const start=onlyRange?rangeIn:0;
+  const stop=onlyRange?(rangeOut===null?end:Math.min(end,rangeOut)):end;
+  if(stop-start<.1)throw new Error(t('invalidRange'));
+  await prepareExport(start);
+  const tracks=[...recDest.stream.getAudioTracks()];
+  if(isVideo){capStream=canvas.captureStream(30);tracks.push(...capStream.getVideoTracks());}
+  exportMime=getRecordingType(isVideo);exportExt=exportMime.includes('mp4')?'mp4':'webm';
+  recorder=new MediaRecorder(new MediaStream(tracks),exportMime?{mimeType:exportMime,videoBitsPerSecond:4000000,audioBitsPerSecond:192000}:{videoBitsPerSecond:4000000,audioBitsPerSecond:192000});
+  chunks=[];exportStopAt=stop;recording=true;toggleExportButtons(true);
+  const activeRecorder=recorder;
+  activeRecorder.addEventListener('dataavailable',e=>{if(e.data?.size)chunks.push(e.data);});
+  activeRecorder.addEventListener('stop',()=>{
+   recording=false;exportStopAt=null;toggleExportButtons(false);
+   if(capStream){capStream.getTracks().forEach(track=>track.stop());capStream=null;}
+   if(!chunks.length){setStatus(t('noExportData'),true);return;}
+   const blob=new Blob(chunks,{type:exportMime||activeRecorder.mimeType});let name=file.name.replace(/\.[^.]+$/,'').replace(/[^a-zA-Z0-9_\-\u00C0-\u024F\u0400-\u04FF]+/g,'_');
+   const link=document.createElement('a'),url=URL.createObjectURL(blob);link.href=url;
+   link.download=(name||'snimak')+'_GLASOLOM'+(onlyRange?'_IN-OUT':'')+'.'+exportExt;
+   document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);
+   setStatus(t('exportDone',{name:link.download,size:(blob.size/1024/1024).toFixed(1)}));
+  });
+  activeRecorder.addEventListener('error',e=>setStatus(t('recorderError',{message:e.error?.message||t('unknown')}),true));
+  // Begin capturing only when playback actually starts. This avoids the dead air caused
+  // by invoking recorder.start() while Chrome is still seeking/decoding the source.
+  const playing=waitForMediaEvent(media,'playing');
+  const play=media.play();await playing;
+  if(!recording){media.pause();return;}
+  activeRecorder.start(250);await play;
+  setStatus(t('exportInProgress'));
+ }catch(e){
+  if(recorder&&recorder.state!=='inactive')stopRecording();
+  else {recording=false;exportStopAt=null;toggleExportButtons(false);if(capStream){capStream.getTracks().forEach(track=>track.stop());capStream=null;}media.pause();}
+  setStatus(t('exportError',{message:e.message}),true);
+ }
+}
+$('export').addEventListener('click',()=>startExport(false));
+$('exportRange').addEventListener('click',()=>startExport(true));
+function stopRecording(){
+ if(recorder&&recorder.state!=='inactive')recorder.stop();
+ media.pause();
+}
 media.addEventListener('ended',()=>{if(recording)stopRecording();});
+media.addEventListener('timeupdate',()=>{if(recording&&exportStopAt!==null&&media.currentTime>=exportStopAt-.015)stopRecording();});
 document.getElementById('language').addEventListener('change',e=>translateUI(e.target.value));
 initDonations();
 translateUI('sr');
 setPreset('duck');
-</script>
-<script src="cut.js"></script>
-<script src="fast-export.js"></script>
-<script>
-const fastButton=document.getElementById('exportFast');
-function fastExportBusy(busy){fastButton.disabled=busy || !cut.ready;$('export').disabled=busy;$('exportCut').disabled=busy || !cut.ready;document.querySelectorAll('#cutStart,#cutEnd,#cutStartNumber,#cutEndNumber').forEach(el=>el.disabled=busy);}
-fastButton.addEventListener('click',async()=>{
- if(!file||!cut.ready||recording||exportStarting||activeFastExport)return;
- const selection=getCutSelection();const base=presets[currentPreset];
- const settings={...base,pitch:+controls.pitch.value,flanger:+controls.flanger.value,ring:+controls.ring.value};
- await GLASOLOM_fastExport({file,isVideo,selection,settings,onStatus:setStatus,onBusy:fastExportBusy,translate:t});
-});
-const originalSyncCut=syncCutUI;
-syncCutUI=function(){originalSyncCut();if(!activeFastExport)fastButton.disabled=!cut.ready||recording||exportStarting;};
 </script>
 </body>
 </html>
