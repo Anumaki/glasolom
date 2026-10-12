@@ -14,7 +14,8 @@ Open `index.html` in desktop Chrome or Edge, or host the repository on GitHub Pa
 - 10 presets: Rubber Duck, Alien, Broken Robot, Helium, Darth Vader–style, Lord Voldemort–style, Baby Voice, Mini Boss, Swirl, Original.
 - Live pitch, flanger, and robotic modulation controls.
 - Serbian, English, Russian, and Spanish interface.
-- **Cut / Trim:** set in/out points with sliders, second-precision inputs, or IN/OUT buttons; preview and export only the selected interval.
+- **Cut / Trim:** set in/out points with sliders, second-precision inputs, or IN/OUT buttons; preview the selected segment.
+- **Export IN–OUT:** records the chosen interval automatically and saves at its OUT point (e.g. 4–10 s ≈ 6 s). **Manual export** remains available with Stop and save.
 - Video exports have **no burned-in text overlay**. Clearly disclose any audio alteration when sharing clips.
 - Local browser processing: no analytics, accounts, or remote file upload.
 - Optional Ko-fi support link. No advertising or tracking scripts included.
@@ -46,7 +47,7 @@ No build step, server, or API key is required. Use HTTPS (GitHub Pages serves it
 
 ## Privacy and limitations
 
-All imported media is processed inside the user's browser. The selected interval is exported by `MediaRecorder` in real time; cuts are approximate to browser playback/recording timing rather than frame-accurate lossless editing. The app does not transmit input files to a GLASOLOM server. Audio-only exports do **not** carry an audible parody announcement; label them clearly when sharing. Some browsers may not export MP4; WebM is the normal fallback. Depending on browser security rules, audio worklet pitch-shifting can fall back to native Web Audio nodes. The pitch effects may contain artifacts and **do not imitate actors or reproduce distinctive voices accurately**.
+All imported media is processed inside the user's browser. Exports use `MediaRecorder` in real time. IN–OUT export stops automatically at the OUT marker, with a timed fallback. Duration and cut points may vary slightly with browser media timing; this is not frame-accurate lossless editing. The app does not transmit input files to a GLASOLOM server. Audio-only exports do **not** carry an audible parody announcement; label them clearly when sharing. Some browsers may not export MP4; WebM is the normal fallback. Depending on browser security rules, audio worklet pitch-shifting can fall back to native Web Audio nodes. The pitch effects may contain artifacts and **do not imitate actors or reproduce distinctive voices accurately**.
 
 For the sake of honest context, the effects should modify audio characteristics rather than the words, while the person publishing remains responsible for editing or misrepresentation outside this tool.
 
