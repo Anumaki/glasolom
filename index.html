@@ -21,7 +21,8 @@
 .disclaimer b{color:var(--acid);font-size:13px;display:block;margin-bottom:5px}.disclaimer p{margin:0 0 8px}.disclaimer p:last-child{margin-bottom:0}
 .foot a{color:var(--acid)}.foot{flex-wrap:wrap;align-items:center}.footer-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
 @media(max-width:620px){.top{gap:12px}.brand{font-size:21px}.tag{display:none}.head-actions{width:100%;margin:0;justify-content:space-between}.hero h1{font-size:clamp(32px,9vw,49px);letter-spacing:-1.5px}}
-.cut-panel{margin:0 18px 18px;padding:14px;background:#10191d;border:1px solid var(--line);border-radius:12px}.cut-head{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}.cut-summary{color:var(--acid);font-size:12px}.cut-track{height:7px;background:#435056;border-radius:9px;position:relative;margin:15px 0}.cut-highlight{position:absolute;background:var(--acid);height:100%;border-radius:9px}.cut-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.cut-grid label{display:grid;gap:5px;font-size:12px;color:var(--muted)}.cut-grid input{width:100%;accent-color:var(--acid)}.cut-grid input[type=number]{background:#1b272c;color:var(--ink);border:1px solid #44565d;border-radius:7px;padding:7px}.cut-buttons{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.cut-buttons button{border:1px solid #52675d;background:#23322e;color:var(--ink);border-radius:7px;padding:7px;font-size:12px}</style>
+.cut-panel{margin:0 18px 18px;padding:14px;background:#10191d;border:1px solid var(--line);border-radius:12px}.cut-head{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}.cut-summary{color:var(--acid);font-size:12px}.cut-track{height:7px;background:#435056;border-radius:9px;position:relative;margin:15px 0}.cut-highlight{position:absolute;background:var(--acid);height:100%;border-radius:9px}.cut-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.cut-grid label{display:grid;gap:5px;font-size:12px;color:var(--muted)}.cut-grid input{width:100%;accent-color:var(--acid)}.cut-grid input[type=number]{background:#1b272c;color:var(--ink);border:1px solid #44565d;border-radius:7px;padding:7px}.cut-buttons{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.cut-buttons button{border:1px solid #52675d;background:#23322e;color:var(--ink);border-radius:7px;padding:7px;font-size:12px}.export-cut{background:#22372b;color:var(--acid);border:1px solid #98b96c}.export-cut:hover:not(:disabled){background:#304a32}.export-cut:disabled{opacity:.43}
+</style>
 </head>
 <body>
 <div class="shell">
@@ -53,7 +54,7 @@
    <div class="param"><div class="param-top"><label for="pitch" data-i18n="pitch">Visina glasa · Pitch</label><span class="number" id="pitchNum">+7.0 st</span></div><input class="range" type="range" id="pitch" min="-12" max="12" step="0.5" value="7" /></div>
    <div class="param"><div class="param-top"><label for="flanger" data-i18n="flanger">Vrtloženje · Flanger</label><span class="number" id="flangerNum">12%</span></div><input class="range" type="range" id="flanger" min="0" max="100" step="1" value="12" /></div>
    <div class="param"><div class="param-top"><label for="ring" data-i18n="ring">Robotska modulacija</label><span class="number" id="ringNum">3%</span></div><input class="range" type="range" id="ring" min="0" max="100" step="1" value="3" /></div>
-   <div class="actions"><button id="export" class="export" disabled><span>⬇</span><span id="exportText" data-i18n="export">Eksportuj obrađeni snimak</span></button><p class="tiny" id="format" data-i18n="exportNote">Export ide u MP4/WebM, zavisno od podrške pregledača. Snimak se obrađuje dok traje reprodukcija.</p></div>
+   <div class="actions"><button id="export" class="export" disabled><span>⬇</span><span id="exportText" data-i18n="export">Eksportuj obrađeni snimak</span></button><button id="exportCut" class="export export-cut" disabled data-i18n="exportCut">✂ Eksportuj IN–OUT</button><p class="tiny" id="format" data-i18n="exportNote">Export ide u MP4/WebM, zavisno od podrške pregledača. Snimak se obrađuje dok traje reprodukcija.</p></div>
   </div></section>
  </div>
  <div class="info"><div><b data-i18n="privacyHead">Privatnost</b><span data-i18n="privacyBody">Audio i video se procesiraju u tvom pregledaču. Nema naloga, servera ni upload-a na internet.</span></div><div><b data-i18n="satireHead">Transparentna satira</b><span data-i18n="satireBody">Nema natpisa preko snimka. Prilikom deljenja naznači da je zvuk izmenjen.</span></div></div>
@@ -128,7 +129,7 @@ const presets={
 const $=id=>document.getElementById(id);
 const media=$('media'),canvas=$('canvas'),cv=canvas.getContext('2d');
 const controls={pitch:$('pitch'),flanger:$('flanger'),ring:$('ring')};
-let currentPreset='duck',file=null,fileUrl='',isVideo=false,audio=null,worklet=null,pitchFallback=null,presence=null,treble=null,flangeWet=null,flangeDry=null,flangeOsc=null,ringDry=null,ringDepth=null,ringOsc=null,analyser=null,recDest=null,recorder=null,chunks=[],recording=false,downloadOnStop=false,exportMime='',exportExt='webm',capStream=null,fxReady=false;
+let currentPreset='duck',file=null,fileUrl='',isVideo=false,audio=null,worklet=null,pitchFallback=null,presence=null,treble=null,flangeWet=null,flangeDry=null,flangeOsc=null,ringDry=null,ringDepth=null,ringOsc=null,analyser=null,recDest=null,recorder=null,chunks=[],recording=false,downloadOnStop=false,exportMime='',exportExt='webm',capStream=null,fxReady=false,exportMode='manual',requestedExportMode='manual',exportStarting=false,autoStopTimer=null;
 const setStatus=(s,warning=false)=>{$('status').textContent=s;$('status').style.color=warning?'#ffc87a':'#a9d7a1';};
 const formatTime=s=>{if(!Number.isFinite(s))return '00:00';s=Math.floor(s);return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');};
 function setPreset(name){currentPreset=name;document.querySelectorAll('.preset').forEach(b=>b.classList.toggle('active',b.dataset.preset===name));const p=presets[name];for(const id of ['pitch','flanger','ring'])controls[id].value=p[id];applyFx();}
@@ -175,7 +176,7 @@ async function initAudio(){if(fxReady){if(audio.state!=='running')await audio.re
  recDest=audio.createMediaStreamDestination();analyser.connect(audio.destination);analyser.connect(recDest);
  fxReady=true;applyFx();await audio.resume();setStatus(t('audioReady'));
 }
-function setFile(f){if(!f)return;if(recording){setStatus(t('finishExport'),true);return;}if(!(f.type.startsWith('audio/')||f.type.startsWith('video/')||/\.(mp3|wav|m4a|mp4|mov|webm|ogg)$/i.test(f.name))){setStatus(t('chooseAV'),true);return;}
+function setFile(f){if(!f)return;if(recording||exportStarting){setStatus(t('finishExport'),true);return;}if(!(f.type.startsWith('audio/')||f.type.startsWith('video/')||/\.(mp3|wav|m4a|mp4|mov|webm|ogg)$/i.test(f.name))){setStatus(t('chooseAV'),true);return;}
  if(fileUrl)URL.revokeObjectURL(fileUrl);file=f;fileUrl=URL.createObjectURL(f);isVideo=f.type.startsWith('video/')||/\.(mp4|mov|webm)$/i.test(f.name);
  media.pause();media.src=fileUrl;media.load();$('fileName').textContent=f.name;$('drop').querySelector('strong').dataset.i18n='dropChange';$('drop').querySelector('strong').textContent=t('dropChange');$('play').disabled=false;$('export').disabled=false;$('seek').value=0;$('seek').disabled=false;resetCutForFile();setStatus(t('fileLoaded',{name:f.name}));
 }
@@ -191,10 +192,12 @@ function draw(){let w=canvas.width,h=canvas.height;cv.fillStyle='#071014';cv.fil
  if(isVideo&&file&&media.readyState>=2&&media.videoWidth){let vw=media.videoWidth,vh=media.videoHeight,scale=Math.min(w/vw,h/vh),dw=vw*scale,dh=vh*scale;try{cv.drawImage(media,(w-dw)/2,(h-dh)/2,dw,dh);}catch(e){}}
  else{const bars=65,bw=w*.65/bars,left=w*.175,data=new Uint8Array(128);if(analyser)analyser.getByteFrequencyData(data);
  cv.save();for(let i=0;i<bars;i++){let q=data[Math.floor(i*data.length/bars)]/255;let t=(!file?0.08:(media.paused?.08:.18))+q*.75;let bh=Math.max(5,t*(h*.63));cv.fillStyle=i%4===0?'#cfff65':'#83b7a5';cv.fillRect(left+i*bw,h/2-bh/2,bw*.55,bh);}cv.restore();cv.fillStyle='#bdcacc';cv.font=`bold ${Math.floor(h*.055)}px system-ui`;cv.textAlign='center';cv.fillText(file?t('previewTitle'):t('previewUpload'),w/2,h*.8);}
- syncClock();if(recording&&cut.ready&&media.currentTime>=cut.end-.025)stopRecording();requestAnimationFrame(draw);}
+ syncClock();if(recording&&exportMode==='cut'&&cut.ready&&media.currentTime>=cut.end-.015)stopRecording();requestAnimationFrame(draw);}
 requestAnimationFrame(draw);
 function getRecordingType(video){const choices=video?['video/mp4;codecs=avc1.42E01E,mp4a.40.2','video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm']:['audio/mp4;codecs=mp4a.40.2','audio/webm;codecs=opus','audio/webm'];for(const t of choices)if(MediaRecorder.isTypeSupported(t))return t;return '';}
-$('export').addEventListener('click',async()=>{if(recording){stopRecording();return;}if(!file)return;
+$('exportCut').addEventListener('click',()=>{if(!cut.ready||recording||exportStarting||!file)return;requestedExportMode='cut';$('export').click();});
+$('export').addEventListener('click',async()=>{if(recording){stopRecording();return;}if(!file||exportStarting)return;
+ exportStarting=true;exportMode=requestedExportMode;requestedExportMode='manual';$('export').disabled=true;$('exportCut').disabled=true;
  try{if(typeof MediaRecorder==='undefined')throw Error(t('mediaRecorderUnsupported'));await initAudio();
  // Export selected interval.
  getCutSelection();media.pause();await jumpToCutStart();
@@ -203,19 +206,24 @@ $('export').addEventListener('click',async()=>{if(recording){stopRecording();ret
  const stream=new MediaStream(tracks);exportMime=getRecordingType(isVideo);exportExt=exportMime.includes('mp4')?'mp4':'webm';
  recorder=new MediaRecorder(stream,exportMime?{mimeType:exportMime,videoBitsPerSecond:4000000,audioBitsPerSecond:192000}:{videoBitsPerSecond:4000000,audioBitsPerSecond:192000});chunks=[];downloadOnStop=true;
  recorder.addEventListener('dataavailable',e=>{if(e.data&&e.data.size)chunks.push(e.data);});
- recorder.addEventListener('stop',()=>{recording=false;$('exportText').textContent=t('export');cutControls(false);$('seek').disabled=false;$('play').disabled=false;
+ recorder.addEventListener('stop',()=>{const finishedMode=exportMode;recording=false;exportStarting=false;exportMode='manual';$('export').disabled=false;$('exportText').textContent=t('export');cutControls(false);$('seek').disabled=false;$('play').disabled=false;
   if(capStream){capStream.getTracks().forEach(t=>t.stop());capStream=null;}
   if(!chunks.length){setStatus(t('noExportData'),true);return;}
   const blob=new Blob(chunks,{type:exportMime||recorder.mimeType});let name=file.name.replace(/\.[^.]+$/,'').replace(/[^a-zA-Z0-9_\-\u00C0-\u024F\u0400-\u04FF]+/g,'_');
-  const link=document.createElement('a'),url=URL.createObjectURL(blob);link.href=url;link.download=(name||'snimak')+'_GLASOLOM.'+exportExt;document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);
+  const link=document.createElement('a'),url=URL.createObjectURL(blob);link.href=url;link.download=(name||'snimak')+(finishedMode==='cut'?'_GLASOLOM_CUT.':'_GLASOLOM.')+exportExt;document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);
   setStatus(t('exportDone',{name:link.download,size:(blob.size/1024/1024).toFixed(1)}));
  });
  recorder.addEventListener('error',e=>{setStatus(t('recorderError',{message:e.error?.message||t('unknown')}),true);});
  recorder.start(250);recording=true;cutControls(true);$('seek').disabled=true;$('play').disabled=true;$('exportText').textContent=t('stopExport');
- setStatus(t('exportInProgress'));await media.play();
- }catch(e){setStatus(t('exportError',{message:e.message}),true);if(recording)stopRecording();}
+ setStatus(t(exportMode==='cut'?'exportCutInProgress':'exportInProgress'));await media.play();
+  if(recording&&exportMode==='cut'){
+   const selectedDuration=(cut.end-cut.start)*1000;
+   // Backup timer; media-currentTime checks in both animation and timeupdate are authoritative.
+   autoStopTimer=setTimeout(()=>{if(recording&&exportMode==='cut')stopRecording();},Math.ceil(selectedDuration+150));
+  }
+ }catch(e){setStatus(t('exportError',{message:e.message}),true);if(recording)stopRecording();else{exportStarting=false;exportMode='manual';$('export').disabled=false;cutControls(false);}}
 });
-function stopRecording(){if(recorder&&recorder.state!=='inactive')recorder.stop();media.pause();}
+function stopRecording(){if(autoStopTimer!==null){clearTimeout(autoStopTimer);autoStopTimer=null;}if(recorder&&recorder.state!=='inactive')recorder.stop();media.pause();}
 media.addEventListener('ended',()=>{if(recording)stopRecording();});
 document.getElementById('language').addEventListener('change',e=>translateUI(e.target.value));
 initDonations();
